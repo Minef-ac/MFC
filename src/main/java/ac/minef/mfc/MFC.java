@@ -50,6 +50,7 @@ public class MFC extends JavaPlugin {
         try {
             config.load(configFile);
         } catch (IOException | InvalidConfigurationException e) {
+            getLogger().severe("Failed to load config!");
             e.printStackTrace();
         }
     }
