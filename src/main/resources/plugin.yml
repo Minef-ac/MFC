@@ -1,0 +1,5 @@
+name: MFC
+main: ac.minef.mfc.MFC
+version: 1.0-SNAPSHOT
+depend:
+  - Sparky

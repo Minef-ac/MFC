@@ -1,0 +1,2 @@
+logger:
+  format: "&5%msg%"
