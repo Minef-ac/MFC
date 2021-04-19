@@ -3,7 +3,11 @@ main: ac.minef.mfc.spigot.MFC
 version: 1.0-SNAPSHOT
 depend:
   - Sparky
-softdepend:
+  - DiscordBotAPI
   - LuckPerms
   - LiteBans
-  - DiscordBotAPI
+commands:
+  mfc:
+    aliases:
+      - minefacore
+      - minefaccore
