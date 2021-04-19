@@ -21,3 +21,5 @@ dependencies {
     implementation 'com.github.TJPlaysNow:Discord-Bot-API---JDA:bb783a3816'
     compileOnly 'net.dv8tion:JDA:LATEST'
 }
+
+compileJava.options.encoding = 'UTF-8'
