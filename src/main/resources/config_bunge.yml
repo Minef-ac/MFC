@@ -1,23 +1,18 @@
-# Plugin made by alandioda (Forked by Minefac)
-
-# [BungeeCord settings]
-# If you use BungeeCord you need to set this to true and
-# you don't need to set any settings here. Message managing is still enabled
-# and it's more effective that you use this settings if you use some other
-# chat managing plugin.
-bungeecord: true
+# Plugin made by alandioda [BungeeCord]
 
 # [Bot settings]
 TOKEN: none
 guild_id: 000000000000000000
 discord_channel_id: 000000000000000000
+# If you want to use only this bot on the bungeecord.
+use_only_bungeecord: false
 
 # [Player count settings]
 # If you want to display player count on the discord bot.
 show_players_online: true
 # Set costume display. <number> will be replaced 
-# with number of players playing on the server.
-bot_playing_text: 'Currently <number> of players playing on the server!'
+# with number of players playing on the network.
+bot_playing_text: 'Currently <number> of players playing on the network!'
 # Status: DEFAULT, LISTENING, STREAMING, WATCHING
 bot_status: DEFAULT
 
@@ -47,27 +42,3 @@ discord_left_message: '**<name> left the game**'
 use_fancy_border: true
 # Select the color of the border:
 builder_color: f8fc19
-
-# [Message managing]
-# Use this to ban words in messages.
-# This will not display a message if it contains a sequence of text.
-# list_of_banned_words, list_of_banned_prefixes, list_of_banned_format_words
-# and list_of_banned_format_prefixes are string lists.
-# Example of how the format should look:
-# list_of_banned_words:
-# - 'Some sequence of text'
-# - 'Another sequence'
-list_of_banned_words:
-
-list_of_banned_prefixes:
-
-list_of_banned_format_words:
-
-list_of_banned_format_prefixes:
-
-# [Other messages]
-# This message will be displayed on the main discord channel
-# To use this. It has to be enabled on the spigot server.
-
-# Manely used to see the formats of the messages.
-debug_mode: false

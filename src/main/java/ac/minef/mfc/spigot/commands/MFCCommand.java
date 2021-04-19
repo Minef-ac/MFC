@@ -1,6 +1,6 @@
-package ac.minef.mfc.commands;
+package ac.minef.mfc.spigot.commands;
 
-import ac.minef.mfc.MFC;
+import ac.minef.mfc.spigot.MFC;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +14,7 @@ public class MFCCommand implements CommandExecutor {
             if (sender.hasPermission("group.administrator")) {
                 if (args.length > 0) {
                     if (args[0].equalsIgnoreCase("reload")) {
-                        MFC.getInstance().loadFile();
+                        MFC.getInstance().Reload();
                         sender.sendMessage(ChatColor.GREEN + "MFC configuration reloaded.");
                         return false;
                     }
