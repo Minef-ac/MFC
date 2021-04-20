@@ -22,6 +22,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MFC extends Plugin {
@@ -67,7 +68,6 @@ public class MFC extends Plugin {
         if (!this.TOKEN.equals("none")) {
             /*  90 */
             this.bot = new Bot(this.TOKEN, "!");
-            /*     */
             /*  92 */
             this.bot.addEvent(event -> {
                 /*     */
@@ -79,9 +79,9 @@ public class MFC extends Plugin {
                         /*     */
                     } else if (this.textChannel != null && this.guild != null) {
                         /*     */
-                        if (e.getChannel().getIdLong() == Saves.textChannelID.longValue()) {
+                        if (e.getChannel().getIdLong() == Saves.textChannelID) {
                             /*     */
-                            String nickname = this.guild.getMember(e.getAuthor()).getNickname();
+                            String nickname = Objects.requireNonNull(this.guild.getMember(e.getAuthor())).getNickname();
                             /* 116 */
                             String name = (Saves.useDiscordNicknames && nickname != null && !nickname.isEmpty()) ? nickname : e.getAuthor().getName();
                             /*     */
@@ -135,9 +135,11 @@ public class MFC extends Plugin {
 
     public void SendMessageToDiscordChannel(String message, Long channelID) {
         /* 394 */
+        getLogger().severe(message + " :: " + channelID);
         if (this.isEnabled && this.isSetUp) {
+            getLogger().severe(message + " :: " + channelID);
             /* 395 */
-            this.guild.getTextChannelById(channelID.longValue()).sendMessage(message).queue();
+            this.guild.getTextChannelById(channelID).sendMessage(message).queue();
             /*     */
         }
         /*     */
@@ -147,8 +149,10 @@ public class MFC extends Plugin {
     /*     */
     public void SendMessageToDiscord(String message) {
         /* 400 */
+        getLogger().severe(message + " ::");
         if (this.isEnabled && this.isSetUp && this.textChannel != null) {
             /* 401 */
+            getLogger().severe(message + " ::");
             this.textChannel.sendMessage(message).queue();
             /*     */
         }
@@ -157,6 +161,7 @@ public class MFC extends Plugin {
 
     public void SendEventMessageToDiscord(String name, String structure) {
         /* 324 */
+        getLogger().severe(name + " :: " + structure);
         if (this.isEnabled && this.isSetUp && this.textChannel != null) {
             /* 325 */
             String toSend = structure.replaceAll("<name>", name);
@@ -193,7 +198,7 @@ public class MFC extends Plugin {
                 /* 341 */
                 builder.setTitle(toSend).setColor(Saves.color);
                 /* 342 */
-                this.bot.getBot().getTextChannelById(channelID).sendMessage(builder.build()).complete();
+                Objects.requireNonNull(this.bot.getBot().getTextChannelById(channelID)).sendMessage(builder.build()).complete();
                 /*     */
             } else {
                 /* 344 */

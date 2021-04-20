@@ -19,7 +19,7 @@ dependencies {
     compileOnly 'ac.sparky:SparkyAPI:2.0.0'
     compileOnly 'net.md-5:bungeecord-api:1.8-SNAPSHOT'
     implementation 'com.github.TJPlaysNow:Discord-Bot-API---JDA:bb783a3816'
-    compileOnly 'net.dv8tion:JDA:LATEST'
+    compileOnly 'net.dv8tion:JDA:4.2.0_189'
 }
 
 compileJava.options.encoding = 'UTF-8'
