@@ -60,6 +60,8 @@ public class MFC extends JavaPlugin {
             api = provider.getProvider();
         }
 
+        UpdateStatus();
+
         Reload();
 
         this.isEnabled = false;
@@ -97,7 +99,7 @@ public class MFC extends JavaPlugin {
         /* 325 */
         String toSend = structure.replaceAll("<server>", server);
         /* 326 */
-        if (ac.minef.mfc.bungee.Saves.useBuilder) {
+        if (ac.minef.mfc.spigot.Saves.useBuilder) {
             /* 327 */
             EmbedBuilder builder = new EmbedBuilder();
             /* 328 */
@@ -123,11 +125,11 @@ public class MFC extends JavaPlugin {
         isEnabled = true;
         /* 161 *
         /* 162 */
-        guild = bot.getBot().getGuildById(ac.minef.mfc.bungee.Saves.guildID);
+        guild = bot.getBot().getGuildById(ac.minef.mfc.spigot.Saves.guildID);
         /* 163 */
         if (guild != null) {
             /* 170 */
-            textChannel = guild.getTextChannelById(ac.minef.mfc.bungee.Saves.textChannelID);
+            textChannel = guild.getTextChannelById(ac.minef.mfc.spigot.Saves.textChannelID);
             /* 171 */
             if (textChannel == null) {
                 /* 172 */
