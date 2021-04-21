@@ -60,8 +60,6 @@ public class MFC extends JavaPlugin {
             api = provider.getProvider();
         }
 
-        UpdateStatus();
-
         Reload();
 
         this.isEnabled = false;
@@ -96,13 +94,9 @@ public class MFC extends JavaPlugin {
     }
 
     public void SendEventMessageToDiscord(String server, String structure, String color) {
-        /* 325 */
         String toSend = structure.replaceAll("<server>", server);
-        /* 326 */
         if (ac.minef.mfc.spigot.Saves.useBuilder) {
-            /* 327 */
             EmbedBuilder builder = new EmbedBuilder();
-            /* 328 */
             builder.setTitle(toSend).setColor(Color.decode(color));
             textChannel.sendMessage(builder.build()).complete();
         } else {
@@ -111,96 +105,55 @@ public class MFC extends JavaPlugin {
     }
 
     public void Reload() {
-        /* 110 */
         loadFile();
-        /* 111 */
         loadConfig(config);
-        /* 116 */
+        UpdateStatus();
         getLogger().info("Reloaded.");
-        /*     */
     }
 
     private void UpdateStatus() {
-        /* 160 */
         isEnabled = true;
-        /* 161 *
-        /* 162 */
-        guild = bot.getBot().getGuildById(ac.minef.mfc.spigot.Saves.guildID);
-        /* 163 */
+        guild = bot.getBot().getGuildById(Saves.guildID);
         if (guild != null) {
-            /* 170 */
             textChannel = guild.getTextChannelById(ac.minef.mfc.spigot.Saves.textChannelID);
-            /* 171 */
             if (textChannel == null) {
-                /* 172 */
                 isEnabled = false;
-                /* 173 */
                 getLogger().info("The text channel ID is not set up properly!");
-                /*     */
             }
-            /*     */
         } else {
-            /*     */
-            /* 178 */
             isEnabled = false;
-            /* 179 */
             getLogger().info("The guild ID is not set up properly!");
-            /*     */
         }
-        /* 181 */
         if (isEnabled) {
             getLogger().info("Everything set up correctly!");
         }
     }
 
     public void loadConfig(Configuration conf) {
-        /*  84 */
         Saves.guildID = conf.getLong("guild_id");
-        /*  85 */
         Saves.textChannelID = conf.getLong("discord_channel_id");
-        /*  86 */
         Saves.showPlayersOnline = conf.getBoolean("show_players_online");
-        /*  87 */
         Saves.inGameChatStyle = conf.getString("minecraft_chat");
         Saves.serverStartStyle = conf.getString("server_start");
         Saves.serverStopStyle = conf.getString("server_stop");
-        /*  88 */
         Saves.discordChatStyle = conf.getString("discord_chat");
-        /*  89 */
         Saves.discordJoinedMessageEnabled = conf.getBoolean("discord_joined_message_enabled");
-        /*  90 */
         Saves.discordLeftMessageEnabled = conf.getBoolean("discord_left_message_enabled");
-        /*  91 */
         Saves.useDiscordNicknames = conf.getBoolean("use_discord_nicknames");
-        /*  92 */
         Saves.joinDiscordStyle = conf.getString("discord_joined_message");
-        /*  93 */
         Saves.leaveDiscordStyle = conf.getString("discord_left_message");
-        /*  94 */
         Saves.canUseColorCodes = conf.getBoolean("colorcodes_enabled");
-        /*  95 */
         Saves.useBuilder = conf.getBoolean("use_fancy_border");
-        /*  96 */
         Saves.color = Color.decode("#" + this.config.getString("builder_color"));
-        /*  97 */
         Saves.botPlayingText = conf.getString("bot_playing_text");
-        /*  99 */
         Saves.useMinecraftNicknames = conf.getBoolean("use_minecraft_nicknames");
-        /* 100 */
         Saves.bannedPrefixes = conf.getStringList("list_of_banned_prefixes");
-        /* 101 */
         Saves.bannedWords = conf.getStringList("list_of_banned_words");
-        /* 103 */
         Saves.isBungeeCord = conf.getBoolean("bungeecord");
-        /* 104 */
         Saves.bungeeDeathMessageEnabled = conf.getBoolean("bungee_death_message_enabled");
-        /* 105 */
         Saves.bannedFWords = conf.getStringList("list_of_banned_format_words");
-        /* 106 */
         Saves.bannedFPrefixes = conf.getStringList("list_of_banned_format_prefixes");
-        /* 107 */
         Saves.debug = conf.getBoolean("debug_mode");
-        /*     */
     }
 
     public void loadFile() {
