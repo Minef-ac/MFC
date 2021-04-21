@@ -1,27 +1,32 @@
 package ac.minef.mfc.spigot;
 
 import ac.minef.mfc.spigot.commands.MFCCommand;
-import ac.minef.mfc.spigot.listeners.AsyncPlayerChat;
-import ac.minef.mfc.spigot.listeners.SparkyPunish;
+import ac.minef.mfc.spigot.commands.Vote;
+import ac.minef.mfc.spigot.listeners.*;
+import net.luckperms.api.LuckPerms;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MFC extends JavaPlugin {
 
     private static MFC instance;
     public boolean isEnabled = true;
-    public boolean isSetUp = false;
     FileConfiguration config;
+    LuckPerms api;
 
     public static MFC getInstance() {
         return instance;
@@ -31,10 +36,19 @@ public class MFC extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        getServer().getPluginManager().registerEvents(new SparkyPunish(), this);
-        /*  44 */
+        getServer().getPluginManager().registerEvents(new Armor(), this);
         getServer().getPluginManager().registerEvents(new AsyncPlayerChat(), this);
+        getServer().getPluginManager().registerEvents(new Connections(), this);
+        getServer().getPluginManager().registerEvents(new PlayerCommand(), this);
+        getServer().getPluginManager().registerEvents(new SparkyPunish(), this);
         getCommand("mfc").setExecutor(new MFCCommand());
+        getCommand("vote").setExecutor(new Vote());
+
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            api = provider.getProvider();
+
+        }
 
         loadFile();
         loadConfig(this.config);
@@ -51,6 +65,20 @@ public class MFC extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("MFC disabled!");
+    }
+
+    public String getRank(String p) {
+        return Objects.requireNonNull(api.getGroupManager().getGroup
+                (Objects.requireNonNull(api.getUserManager().getUser(p)).getPrimaryGroup())).getDisplayName();
+    }
+
+    public void executeCommand(String cmd) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                getServer().dispatchCommand(getServer().getConsoleSender(), cmd);
+            }
+        }.runTaskLater(this, 5);   // Your plugin instance, the time to be delayed.
     }
 
     public void Reload() {

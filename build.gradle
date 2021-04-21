@@ -12,6 +12,8 @@ repositories {
     maven { url = 'https://nexus.funkemunky.cc/content/repositories/releases/'}
     maven { url = 'https://jitpack.io'}
     maven { url = 'https://jcenter.bintray.com'}
+
+
 }
 
 dependencies {
@@ -20,6 +22,7 @@ dependencies {
     compileOnly 'net.md-5:bungeecord-api:1.8-SNAPSHOT'
     implementation 'com.github.TJPlaysNow:Discord-Bot-API---JDA:bb783a3816'
     compileOnly 'net.dv8tion:JDA:4.2.0_189'
+    compileOnly 'net.luckperms:api:5.3'
 }
 
 compileJava.options.encoding = 'UTF-8'

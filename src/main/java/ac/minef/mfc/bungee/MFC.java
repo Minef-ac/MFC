@@ -1,6 +1,9 @@
 package ac.minef.mfc.bungee;
 
+import ac.minef.mfc.bungee.commands.Duels;
+import ac.minef.mfc.bungee.commands.Hub;
 import ac.minef.mfc.bungee.commands.MFCB;
+import ac.minef.mfc.bungee.commands.Minefactions;
 import ac.minef.mfc.bungee.listeners.*;
 import com.google.common.io.ByteStreams;
 import com.tjplaysnow.discord.object.Bot;
@@ -9,6 +12,9 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.StatusChangeEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -17,6 +23,8 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.awt.*;
 import java.io.*;
@@ -41,6 +49,8 @@ public class MFC extends Plugin {
     TextChannel commandChannel;
     boolean isUsingVanishOnSpigot = false;
     Configuration config;
+    LuckPerms api;
+    int bcMsg;
 
     public static MFC getInstance() {
         return instance;
@@ -54,34 +64,43 @@ public class MFC extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PluginMessage());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new Quit());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new ServerSwitch());
-        /*     */
-        /*  76 */
+
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Duels());
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Hub());
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Minefactions());
+
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new MFCB(this));
+
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            api = provider.getProvider();
+
+        }
+
+
         /*     */
         /*  81 */
         GetDefaultConfig();
         /*     */
         /*  83 */
-        LoadConfig(this.config);
+        LoadConfig(config);
         /*     */
         /*  89 */
-        if (!this.TOKEN.equals("none")) {
+        if (!TOKEN.equals("none")) {
             /*  90 */
-            this.bot = new Bot(this.TOKEN, "!");
+            bot = new Bot(TOKEN, "!");
             /*  92 */
-            this.bot.addEvent(event -> {
+            bot.addEvent(event -> {
                 /*     */
                 if (event instanceof MessageReceivedEvent) {
                     /*     */
                     MessageReceivedEvent e = (MessageReceivedEvent) event;
-                    /*     */
-                    if (this.isEnabled && this.isSetUp && !e.getAuthor().isBot()) {
-                        /*     */
-                    } else if (this.textChannel != null && this.guild != null) {
+
+                    if (textChannel != null && guild != null) {
                         /*     */
                         if (e.getChannel().getIdLong() == Saves.textChannelID) {
                             /*     */
-                            String nickname = Objects.requireNonNull(this.guild.getMember(e.getAuthor())).getNickname();
+                            String nickname = Objects.requireNonNull(guild.getMember(e.getAuthor())).getNickname();
                             /* 116 */
                             String name = (Saves.useDiscordNicknames && nickname != null && !nickname.isEmpty()) ? nickname : e.getAuthor().getName();
                             /*     */
@@ -105,7 +124,7 @@ public class MFC extends Plugin {
                         /*     */
                         getLogger().info("READY!");
                         /*     */
-                        if (!this.isSetUp) {
+                        if (!isSetUp) {
                             /*     */
                             UpdateStatus();
                             /*     */
@@ -119,27 +138,146 @@ public class MFC extends Plugin {
                 /*     */
             });
             /* 142 */
-            this.bot.setBotThread(new ThreadBungee(this));
+            bot.setBotThread(new ThreadBungee(this));
             /*     */
             /* 144 */
             UpdatePlayerCount();
+
+            bungeeBroadcast();
             /*     */
         } else {
             /* 146 */
-            this.isEnabled = false;
+            isEnabled = false;
             /* 147 */
             getLogger().info("Please specify the bot's token.");
             /*     */
         }
     }
 
+    private void bungeeBroadcast() {
+        bcMsg = 1;
+        getProxy().getScheduler().schedule(this, new Runnable() {
+            @Override
+            public void run() {
+                for (ProxiedPlayer p : getProxy().getPlayers()) {
+                    if (bcMsg == 1) {
+                        String msg = ChatColor.DARK_GRAY + "["
+                                + ChatColor.RED + ChatColor.BOLD
+                                + "Minef.ac" + ChatColor.DARK_GRAY + "] "
+                                + ChatColor.GRAY + "You "
+                                + ChatColor.GRAY + "can "
+                                + ChatColor.GRAY + "use"
+                                + ChatColor.GOLD + " /vote " + ChatColor.GRAY
+                                + "to " + ChatColor.GRAY + "earn "
+                                + ChatColor.GRAY + "rewards "
+                                + ChatColor.GRAY + "and " + ChatColor.GRAY
+                                + "help " + ChatColor.GRAY + "the "
+                                + ChatColor.GRAY + "network "
+                                + ChatColor.GRAY + "grow!";
+                        p.sendMessage(new TextComponent(msg));
+                    }
+                    if (bcMsg == 2) {
+                        String msg = ChatColor.DARK_GRAY + "[" +
+                                ChatColor.RED + ChatColor.BOLD
+                                + "Minef.ac" + ChatColor.DARK_GRAY
+                                + "] " + ChatColor.GRAY + "Purchase "
+                                + ChatColor.GRAY + "ranks "
+                                + ChatColor.GRAY + "& "
+                                + ChatColor.GRAY + "others "
+                                + ChatColor.GRAY + "from"
+                                + ChatColor.GOLD + " /store " + ChatColor.GRAY
+                                + "to " + ChatColor.GRAY + "support "
+                                + ChatColor.GRAY + "the "
+                                + ChatColor.GRAY + "server!";
+                        p.sendMessage(new TextComponent(msg));
+                    }
+                    if (bcMsg == 3) {
+                        String msg = ChatColor.DARK_GRAY + "["
+                                + ChatColor.RED + ChatColor.BOLD
+                                + "Minef.ac" + ChatColor.DARK_GRAY + "] "
+                                + ChatColor.GRAY + "Use"
+                                + ChatColor.GOLD + " /help " + ChatColor.GRAY
+                                + "if " + ChatColor.GRAY + "you" + ChatColor.GRAY
+                                + " aren't" + ChatColor.GRAY + " familiar "
+                                + ChatColor.GRAY + "with "
+                                + ChatColor.GRAY + "commands";
+                        p.sendMessage(new TextComponent(msg));
+                    }
+                    if (bcMsg == 4) {
+                        String msg = ChatColor.DARK_GRAY + "["
+                                + ChatColor.RED + ChatColor.BOLD
+                                + "Minef.ac" + ChatColor.DARK_GRAY + "] "
+                                + ChatColor.GRAY + "Our "
+                                + ChatColor.GRAY + "anticheat "
+                                + ChatColor.GRAY + "has "
+                                + ChatColor.GRAY + "banned "
+                                + ChatColor.GOLD /*+ getBans()*/
+                                + ChatColor.GRAY + " total "
+                                + ChatColor.GRAY + "players!";
+                        p.sendMessage(new TextComponent(msg));
+                    }
+                    if (bcMsg == 5) {
+                        String msg = ChatColor.DARK_GRAY + "["
+                                + ChatColor.RED + ChatColor.BOLD
+                                + "Minef.ac" + ChatColor.DARK_GRAY
+                                + "] " + ChatColor.GRAY + "Our "
+                                + ChatColor.GRAY + "Discord "
+                                + ChatColor.GRAY + "can "
+                                + ChatColor.GRAY + "be "
+                                + ChatColor.GRAY + "accessed "
+                                + ChatColor.GRAY + "by "
+                                + ChatColor.GRAY + "using "
+                                + ChatColor.GOLD + " /discord";
+                        p.sendMessage(new TextComponent(msg));
+                    }
+                    if (bcMsg == 6) {
+                        String msg = ChatColor.DARK_GRAY + "["
+                                + ChatColor.RED + ChatColor.BOLD
+                                + "Minef.ac" + ChatColor.DARK_GRAY + "] "
+                                + ChatColor.GRAY + "Your "
+                                + ChatColor.GRAY + "rank "
+                                + ChatColor.GRAY + "is " + ChatColor.GOLD
+                                + getRank(p.getName()) + "\n" + ChatColor.GRAY + "Use"
+                                + ChatColor.GOLD + " /ranks " + ChatColor.GRAY
+                                + "and" + ChatColor.GOLD + " /rankup "
+                                + ChatColor.GRAY + "for "
+                                + ChatColor.GRAY + "ranking "
+                                + ChatColor.GRAY + "up";
+                        p.sendMessage(new TextComponent(msg));
+                        bcMsg = 0;
+                    }
+                    bcMsg = bcMsg + 1;
+                }
+            }
+        }, 1, 120, TimeUnit.SECONDS);
+    }
+
+    public String getRank(String p) {
+        return LuckPermsProvider.get().getGroupManager().getGroup
+                (LuckPermsProvider.get().getUserManager().getUser(p).getPrimaryGroup()).getDisplayName();
+    }
+
+    /*public long getBans() {
+        String query = "SELECT COUNT(*) FROM {bans}";
+        try (PreparedStatement st = Database.get().prepareStatement(query)) {
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }*/
+
     public void SendMessageToDiscordChannel(String message, Long channelID) {
         /* 394 */
         getLogger().severe(message + " :: " + channelID);
-        if (this.isEnabled && this.isSetUp) {
+        if (isEnabled && isSetUp) {
             getLogger().severe(message + " :: " + channelID);
             /* 395 */
-            this.guild.getTextChannelById(channelID).sendMessage(message).queue();
+            guild.getTextChannelById(channelID).sendMessage(message).queue();
             /*     */
         }
         /*     */
@@ -150,10 +288,10 @@ public class MFC extends Plugin {
     public void SendMessageToDiscord(String message) {
         /* 400 */
         getLogger().severe(message + " ::");
-        if (this.isEnabled && this.isSetUp && this.textChannel != null) {
+        if (isEnabled && isSetUp && textChannel != null) {
             /* 401 */
             getLogger().severe(message + " ::");
-            this.textChannel.sendMessage(message).queue();
+            textChannel.sendMessage(message).queue();
             /*     */
         }
         /*     */
@@ -161,26 +299,31 @@ public class MFC extends Plugin {
 
     public void SendEventMessageToDiscord(String name, String structure) {
         /* 324 */
-        getLogger().severe(name + " :: " + structure);
-        if (this.isEnabled && this.isSetUp && this.textChannel != null) {
+        getLogger().severe("i" + name + " :: " + structure);
+        if (isEnabled && isSetUp && textChannel != null) {
             /* 325 */
             String toSend = structure.replaceAll("<name>", name);
+            getLogger().severe("0" + toSend + " :: " + structure);
             /* 326 */
             if (Saves.useBuilder) {
+                getLogger().severe("1" + toSend + " :: " + structure);
                 /* 327 */
                 EmbedBuilder builder = new EmbedBuilder();
                 /* 328 */
                 builder.setTitle(toSend).setColor(Saves.color);
                 /* 329 */
-                this.textChannel.sendMessage(builder.build()).complete();
+                textChannel.sendMessage(builder.build()).complete();
                 /*     */
             } else {
                 /* 331 */
-                this.textChannel.sendMessage(toSend).queue();
+                textChannel.sendMessage(toSend).queue();
                 /*     */
             }
             /*     */
         }
+        if (!isEnabled) getLogger().severe("NOT ENABLED");
+        if (!isSetUp) getLogger().severe("NOT SETUP");
+        if (textChannel == null) getLogger().severe("TEXT CHANNEL NOT SETUP");
         /*     */
     }
 
@@ -188,7 +331,7 @@ public class MFC extends Plugin {
     /*     */
     public void SendEventMessageToDiscord(String name, String structure, long channelID) {
         /* 337 */
-        if (this.isEnabled && this.isSetUp) {
+        if (isEnabled && isSetUp) {
             /* 338 */
             String toSend = structure.replaceAll("<name>", name);
             /* 339 */
@@ -198,11 +341,11 @@ public class MFC extends Plugin {
                 /* 341 */
                 builder.setTitle(toSend).setColor(Saves.color);
                 /* 342 */
-                Objects.requireNonNull(this.bot.getBot().getTextChannelById(channelID)).sendMessage(builder.build()).complete();
+                Objects.requireNonNull(bot.getBot().getTextChannelById(channelID)).sendMessage(builder.build()).complete();
                 /*     */
             } else {
                 /* 344 */
-                this.bot.getBot().getTextChannelById(channelID).sendMessage(toSend).queue();
+                bot.getBot().getTextChannelById(channelID).sendMessage(toSend).queue();
                 /*     */
             }
             /*     */
@@ -246,7 +389,7 @@ public class MFC extends Plugin {
 
     public void UpdatePlayerCount() {
         /* 481 */
-        if (this.isEnabled) {
+        if (isEnabled) {
             /* 485 */
             if (Saves.showPlayersOnline) {
                 /* 486 */
@@ -255,7 +398,7 @@ public class MFC extends Plugin {
                     /*     */
                     public void run() {
                         /* 489 */
-                        int size = MFC.this.GetPlayerCount();
+                        int size = GetPlayerCount();
                         /* 490 */
                         if (Saves.botPlayingText != null && !Saves.botPlayingText.equals("")) {
                             /* 491 */
@@ -283,9 +426,9 @@ public class MFC extends Plugin {
         /* 505 */
         if (!Saves.onlyBungeecord) {
             /* 506 */
-            size = this.playerInfo.size();
+            size = playerInfo.size();
             /* 507 */
-            for (Map.Entry<String, Boolean> entry : this.playerInfo.entrySet()) {
+            for (Map.Entry<String, Boolean> entry : playerInfo.entrySet()) {
                 /* 508 */
                 if (entry.getValue().booleanValue()) {
                     /* 509 */
@@ -303,46 +446,40 @@ public class MFC extends Plugin {
 
     private void UpdateStatus() {
         /* 160 */
-        this.isEnabled = true;
+        isEnabled = true;
         /* 161 */
-        this.isSetUp = false;
+        isSetUp = false;
         /* 162 */
-        this.guild = this.bot.getBot().getGuildById(Saves.guildID.longValue());
+        guild = bot.getBot().getGuildById(Saves.guildID.longValue());
         /* 163 */
-        if (this.guild != null) {
-            /* 164 */
-            if (this.guild != null) {
-                /* 165 */
-            } else {
-                /* 170 */
-                this.textChannel = this.guild.getTextChannelById(Saves.textChannelID.longValue());
-                /* 171 */
-                if (this.textChannel == null) {
-                    /* 172 */
-                    this.isEnabled = false;
-                    /* 173 */
-                    getLogger().info("The text channel ID is not set up properly!");
-                    /*     */
-                }
+        if (guild != null) {
+            /* 170 */
+            textChannel = guild.getTextChannelById(Saves.textChannelID.longValue());
+            /* 171 */
+            if (textChannel == null) {
+                /* 172 */
+                isEnabled = false;
+                /* 173 */
+                getLogger().info("The text channel ID is not set up properly!");
                 /*     */
             }
             /*     */
         } else {
             /*     */
             /* 178 */
-            this.isEnabled = false;
+            isEnabled = false;
             /* 179 */
             getLogger().info("The guild ID is not set up properly!");
             /*     */
         }
         /* 181 */
-        if (this.isEnabled) {
+        if (isEnabled) {
             /* 182 */
             getLogger().info("Everything set up correctly!");
             /*     */
         }
         /* 184 */
-        this.isSetUp = true;
+        isSetUp = true;
         /*     */
     }
 
@@ -350,7 +487,7 @@ public class MFC extends Plugin {
         /* 152 */
         GetDefaultConfig();
         /* 153 */
-        LoadConfig(this.config);
+        LoadConfig(config);
         /* 154 */
         UpdateStatus();
         /* 155 */
@@ -361,8 +498,11 @@ public class MFC extends Plugin {
     }
 
     private void LoadConfig(Configuration conf) {
+
+
+
         /* 234 */
-        this.TOKEN = conf.getString("TOKEN");
+        TOKEN = conf.getString("TOKEN");
         /* 235 */
         Saves.guildID = Long.valueOf(conf.getLong("guild_id"));
         /* 236 */
@@ -388,7 +528,7 @@ public class MFC extends Plugin {
         /* 246 */
         Saves.useBuilder = conf.getBoolean("use_fancy_border");
         /* 247 */
-        Saves.color = Color.decode("#" + this.config.getString("builder_color"));
+        Saves.color = Color.decode("#" + config.getString("builder_color"));
         /* 248 */
         Saves.botPlayingText = conf.getString("bot_playing_text");
         /* 249 */
@@ -404,9 +544,9 @@ public class MFC extends Plugin {
             /* 257 */
             if (id != null && id.longValue() != 0L) {
                 /* 258 */
-                this.serversChannelIDs.put(server.getKey(), id);
+                serversChannelIDs.put(server.getKey(), id);
                 /* 259 */
-                this.serversPastCount.put(server.getKey(), Integer.valueOf(0));
+                serversPastCount.put(server.getKey(), Integer.valueOf(0));
                 /*     */
             }
             /*     */
@@ -420,26 +560,28 @@ public class MFC extends Plugin {
 
     private void SendMessageToMinecraft(String name, String role, String message) {
         /* 420 */
-        if (!Saves.canUseColorCodes) {
-            /* 421 */
-            message = message.replaceAll("§", "");
-            /*     */
-        }
-        /* 423 */
-        String toSend = Saves.inGameChatStyle.replaceAll("&", "§");
-        /* 424 */
-        toSend = toSend.replaceAll("<name>", name);
-        /* 425 */
-        toSend = toSend.replaceAll("<message>", message);
-        /* 426 */
-        toSend = toSend.replaceAll("<role>", role);
-        /* 427 */
-        toSend = FixColors(toSend);
-        /* 428 */
-        for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            /* 429 */
-            p.sendMessage(new TextComponent(toSend));
-            /*     */
+        if (!role.contains("Minef.ac")) {
+            if (!Saves.canUseColorCodes) {
+                /* 421 */
+                message = message.replaceAll("§", "");
+                /*     */
+            }
+            /* 423 */
+            String toSend = Saves.inGameChatStyle.replaceAll("&", "§");
+            /* 424 */
+            toSend = toSend.replaceAll("<name>", name);
+            /* 425 */
+            toSend = toSend.replaceAll("<message>", message);
+            /* 426 */
+            toSend = toSend.replaceAll("<role>", role);
+            /* 427 */
+            toSend = FixColors(toSend);
+            /* 428 */
+            for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+                /* 429 */
+                p.sendMessage(new TextComponent(toSend));
+                /*     */
+            }
         }
         /*     */
     }

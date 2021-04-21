@@ -9,5 +9,10 @@ depend:
 commands:
   mfc:
     aliases:
+      - core
+      - mfcore
       - minefacore
       - minefaccore
+  vote:
+    aliases:
+      - votes
