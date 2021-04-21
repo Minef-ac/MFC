@@ -14,6 +14,7 @@ public class Quit implements Listener {
 
     @EventHandler
     /*     */ public void onQuit(PlayerDisconnectEvent e) {
+        MFC.getInstance().getLogger().severe("i" + e.getPlayer().getName() + " :: ");
 
         if (e.getPlayer().getServer() != null) {
             ServerInfo server = e.getPlayer().getServer().getInfo();
@@ -38,9 +39,11 @@ public class Quit implements Listener {
             /*     */
         } else {
             /* 299 */
-            if (MFC.getInstance().playerInfo.containsKey(e.getPlayer().getName()) && !MFC.getInstance().playerInfo.get(e.getPlayer().getName()).booleanValue() &&
-                    /* 300 */         Saves.discordLeftMessageEnabled) {
-                /* 301 */
+            MFC.getInstance().getLogger().severe("0" + e.getPlayer().getName() + " :: ");
+            if (/*MFC.getInstance().playerInfo.containsKey(e.getPlayer().getName()) && */
+                    MFC.getInstance().playerInfo.get(e.getPlayer().getName()) == null
+                            || !MFC.getInstance().playerInfo.get(e.getPlayer().getName()) &&
+                            Saves.discordLeftMessageEnabled) {
                 MFC.getInstance().SendEventMessageToDiscord(e.getPlayer().getName(), Saves.leaveDiscordStyle);
                 /*     */
             }

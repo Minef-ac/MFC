@@ -40,6 +40,10 @@ public class MFC extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AsyncPlayerChat(), this);
         getServer().getPluginManager().registerEvents(new Connections(), this);
         getServer().getPluginManager().registerEvents(new PlayerCommand(), this);
+        getServer().getPluginManager().registerEvents(new InventoryClick(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDropItem(), this);
+        getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
+        getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new SparkyPunish(), this);
         getCommand("mfc").setExecutor(new MFCCommand());
         getCommand("vote").setExecutor(new Vote());
