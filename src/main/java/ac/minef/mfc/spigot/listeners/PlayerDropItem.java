@@ -10,8 +10,7 @@ public class PlayerDropItem implements Listener {
     @EventHandler
     public void onPlayerDrop(PlayerDropItemEvent e) {
         if (!e.getPlayer().isOp()) {
-            if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("hub")
-                    || MFC.getInstance().getServer().getName().equalsIgnoreCase("hub")) {
+            if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("hub")) {
                 e.setCancelled(true);
             }
         }

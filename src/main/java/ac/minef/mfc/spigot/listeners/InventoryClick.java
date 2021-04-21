@@ -10,8 +10,7 @@ public class InventoryClick implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (!e.getWhoClicked().isOp()) {
-            if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("hub")
-                    || MFC.getInstance().getServer().getName().equalsIgnoreCase("hub")) {
+            if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("hub")) {
                 e.setCancelled(true);
             }
         }

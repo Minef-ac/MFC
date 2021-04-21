@@ -26,6 +26,8 @@ bot_status: DEFAULT
 # <message> will be replaced with the message from discord message.
 # <role> will be replaced with the higest role from discord.
 minecraft_chat: '<role> <<name>> <message>'
+server_start: '<server> server has started'
+server_stop: '<server> server has stopped'
 use_minecraft_nicknames: false
 
 # [Chat Discord]

@@ -32,8 +32,7 @@ public class Connections implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
-        if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("hub")
-                || MFC.getInstance().getServer().getName().equalsIgnoreCase("hub")) {
+        if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("hub")) {
             e.getPlayer().getInventory().clear();
             e.getPlayer().getInventory().setItem(0, hubItem);
             e.getPlayer().getInventory().setItem(8, menuItem);

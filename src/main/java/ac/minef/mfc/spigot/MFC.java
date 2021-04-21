@@ -3,6 +3,10 @@ package ac.minef.mfc.spigot;
 import ac.minef.mfc.spigot.commands.MFCCommand;
 import ac.minef.mfc.spigot.commands.Vote;
 import ac.minef.mfc.spigot.listeners.*;
+import com.tjplaysnow.discord.object.Bot;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
@@ -25,8 +29,11 @@ public class MFC extends JavaPlugin {
 
     private static MFC instance;
     public boolean isEnabled = true;
+    public TextChannel textChannel;
     FileConfiguration config;
     LuckPerms api;
+    Bot bot;
+    Guild guild;
 
     public static MFC getInstance() {
         return instance;
@@ -51,11 +58,9 @@ public class MFC extends JavaPlugin {
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
             api = provider.getProvider();
-
         }
 
-        loadFile();
-        loadConfig(this.config);
+        Reload();
 
         this.isEnabled = false;
         /*  60 */
@@ -64,11 +69,14 @@ public class MFC extends JavaPlugin {
         /*  62 */
         getLogger().info("MFC BungeeCord mode activated!");
         getLogger().info("MFC enabled!");
+
+        SendEventMessageToDiscord(getServer().getServerName(), Saves.serverStartStyle, "#15ea0e");
     }
 
     @Override
     public void onDisable() {
         getLogger().info("MFC disabled!");
+        SendEventMessageToDiscord(getServer().getServerName(), Saves.serverStopStyle, "#ee1212");
     }
 
     public String getRank(String p) {
@@ -85,6 +93,21 @@ public class MFC extends JavaPlugin {
         }.runTaskLater(this, 5);   // Your plugin instance, the time to be delayed.
     }
 
+    public void SendEventMessageToDiscord(String server, String structure, String color) {
+        /* 325 */
+        String toSend = structure.replaceAll("<server>", server);
+        /* 326 */
+        if (ac.minef.mfc.bungee.Saves.useBuilder) {
+            /* 327 */
+            EmbedBuilder builder = new EmbedBuilder();
+            /* 328 */
+            builder.setTitle(toSend).setColor(Color.decode(color));
+            textChannel.sendMessage(builder.build()).complete();
+        } else {
+            textChannel.sendMessage(toSend).queue();
+        }
+    }
+
     public void Reload() {
         /* 110 */
         loadFile();
@@ -93,6 +116,39 @@ public class MFC extends JavaPlugin {
         /* 116 */
         getLogger().info("Reloaded.");
         /*     */
+    }
+
+    private void UpdateStatus() {
+        /* 160 */
+        isEnabled = true;
+        /* 161 *
+        /* 162 */
+        guild = bot.getBot().getGuildById(ac.minef.mfc.bungee.Saves.guildID);
+        /* 163 */
+        if (guild != null) {
+            /* 170 */
+            textChannel = guild.getTextChannelById(ac.minef.mfc.bungee.Saves.textChannelID);
+            /* 171 */
+            if (textChannel == null) {
+                /* 172 */
+                isEnabled = false;
+                /* 173 */
+                getLogger().info("The text channel ID is not set up properly!");
+                /*     */
+            }
+            /*     */
+        } else {
+            /*     */
+            /* 178 */
+            isEnabled = false;
+            /* 179 */
+            getLogger().info("The guild ID is not set up properly!");
+            /*     */
+        }
+        /* 181 */
+        if (isEnabled) {
+            getLogger().info("Everything set up correctly!");
+        }
     }
 
     public void loadConfig(Configuration conf) {
@@ -104,6 +160,8 @@ public class MFC extends JavaPlugin {
         Saves.showPlayersOnline = conf.getBoolean("show_players_online");
         /*  87 */
         Saves.inGameChatStyle = conf.getString("minecraft_chat");
+        Saves.serverStartStyle = conf.getString("server_start");
+        Saves.serverStopStyle = conf.getString("server_stop");
         /*  88 */
         Saves.discordChatStyle = conf.getString("discord_chat");
         /*  89 */

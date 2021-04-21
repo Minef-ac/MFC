@@ -25,6 +25,8 @@ import java.util.List;
     /*    */   public static boolean bungeeDeathMessageEnabled;
     /*    */   public static boolean debug;
     /*    */   public static String inGameChatStyle;
+    public static String serverStartStyle;
+    public static String serverStopStyle;
     /*    */   public static String discordChatStyle;
     /*    */   public static String joinDiscordStyle;
     /*    */   public static String leaveDiscordStyle;

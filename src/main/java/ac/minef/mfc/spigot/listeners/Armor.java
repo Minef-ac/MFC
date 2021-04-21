@@ -11,22 +11,19 @@ public class Armor implements Listener {
 
     public Armor() {
         if (Bukkit.getServerName().equalsIgnoreCase("factions")) {
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(MFC.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (p.getInventory().getHelmet() != null && p.getInventory().getChestplate() != null
-                                && p.getInventory().getLeggings() != null && p.getInventory().getBoots() != null) {
-                            if (p.getInventory().getHelmet().getItemMeta().getDisplayName() != null
-                                    && p.getInventory().getChestplate().getItemMeta().getDisplayName() != null
-                                    && p.getInventory().getLeggings().getItemMeta().getDisplayName() != null
-                                    && p.getInventory().getBoots().getItemMeta().getDisplayName() != null) {
-                                if (p.getInventory().getHelmet().getItemMeta().getDisplayName().contains("Weak")
-                                        && p.getInventory().getChestplate().getItemMeta().getDisplayName().contains("Weak")
-                                        && p.getInventory().getLeggings().getItemMeta().getDisplayName().contains("Weak")
-                                        && p.getInventory().getBoots().getItemMeta().getDisplayName().contains("Weak")) {
-                                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 120, 0));
-                                }
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(MFC.getInstance(), () -> {
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (p.getInventory().getHelmet() != null && p.getInventory().getChestplate() != null
+                            && p.getInventory().getLeggings() != null && p.getInventory().getBoots() != null) {
+                        if (p.getInventory().getHelmet().getItemMeta().getDisplayName() != null
+                                && p.getInventory().getChestplate().getItemMeta().getDisplayName() != null
+                                && p.getInventory().getLeggings().getItemMeta().getDisplayName() != null
+                                && p.getInventory().getBoots().getItemMeta().getDisplayName() != null) {
+                            if (p.getInventory().getHelmet().getItemMeta().getDisplayName().contains("Weak")
+                                    && p.getInventory().getChestplate().getItemMeta().getDisplayName().contains("Weak")
+                                    && p.getInventory().getLeggings().getItemMeta().getDisplayName().contains("Weak")
+                                    && p.getInventory().getBoots().getItemMeta().getDisplayName().contains("Weak")) {
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 120, 0));
                             }
                         }
                     }

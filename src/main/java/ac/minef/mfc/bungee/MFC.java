@@ -193,7 +193,7 @@ public class MFC extends Plugin {
                                 + ChatColor.GRAY + "commands";
                         p.sendMessage(new TextComponent(msg));
                     }
-                    if (bcMsg == 4) {
+                    /*if (bcMsg == 4) {
                         String msg = ChatColor.DARK_GRAY + "["
                                 + ChatColor.RED + ChatColor.BOLD
                                 + "Minef.ac" + ChatColor.DARK_GRAY + "] "
@@ -201,12 +201,12 @@ public class MFC extends Plugin {
                                 + ChatColor.GRAY + "anticheat "
                                 + ChatColor.GRAY + "has "
                                 + ChatColor.GRAY + "banned "
-                                + ChatColor.GOLD /*+ getBans()*/
+                                + ChatColor.GOLD + getBans()
                                 + ChatColor.GRAY + " total "
                                 + ChatColor.GRAY + "players!";
                         p.sendMessage(new TextComponent(msg));
-                    }
-                    if (bcMsg == 5) {
+                    }*/
+                    if (bcMsg == 4) {
                         String msg = ChatColor.DARK_GRAY + "["
                                 + ChatColor.RED + ChatColor.BOLD
                                 + "Minef.ac" + ChatColor.DARK_GRAY
@@ -220,7 +220,7 @@ public class MFC extends Plugin {
                                 + ChatColor.GOLD + " /discord";
                         p.sendMessage(new TextComponent(msg));
                     }
-                    if (bcMsg == 6) {
+                    if (bcMsg == 5) {
                         String msg = ChatColor.DARK_GRAY + "["
                                 + ChatColor.RED + ChatColor.BOLD
                                 + "Minef.ac" + ChatColor.DARK_GRAY + "] "
@@ -243,8 +243,8 @@ public class MFC extends Plugin {
     }
 
     public String getRank(String p) {
-        return LuckPermsProvider.get().getGroupManager().getGroup
-                (LuckPermsProvider.get().getUserManager().getUser(p).getPrimaryGroup()).getDisplayName();
+        return Objects.requireNonNull(LuckPermsProvider.get().getGroupManager().getGroup
+                (Objects.requireNonNull(LuckPermsProvider.get().getUserManager().getUser(p)).getPrimaryGroup())).getDisplayName();
     }
 
     /*public long getBans() {
@@ -317,7 +317,7 @@ public class MFC extends Plugin {
                 /*     */
             } else {
                 /* 344 */
-                bot.getBot().getTextChannelById(channelID).sendMessage(toSend).queue();
+                Objects.requireNonNull(bot.getBot().getTextChannelById(channelID)).sendMessage(toSend).queue();
                 /*     */
             }
             /*     */
@@ -402,7 +402,7 @@ public class MFC extends Plugin {
             /* 507 */
             for (Map.Entry<String, Boolean> entry : playerInfo.entrySet()) {
                 /* 508 */
-                if (entry.getValue().booleanValue()) {
+                if (entry.getValue()) {
                     /* 509 */
                     size--;
                     /*     */
@@ -422,11 +422,11 @@ public class MFC extends Plugin {
         /* 161 */
         isSetUp = false;
         /* 162 */
-        guild = bot.getBot().getGuildById(Saves.guildID.longValue());
+        guild = bot.getBot().getGuildById(Saves.guildID);
         /* 163 */
         if (guild != null) {
             /* 170 */
-            textChannel = guild.getTextChannelById(Saves.textChannelID.longValue());
+            textChannel = guild.getTextChannelById(Saves.textChannelID);
             /* 171 */
             if (textChannel == null) {
                 /* 172 */
@@ -476,9 +476,9 @@ public class MFC extends Plugin {
         /* 234 */
         TOKEN = conf.getString("TOKEN");
         /* 235 */
-        Saves.guildID = Long.valueOf(conf.getLong("guild_id"));
+        Saves.guildID = conf.getLong("guild_id");
         /* 236 */
-        Saves.textChannelID = Long.valueOf(conf.getLong("discord_channel_id"));
+        Saves.textChannelID = conf.getLong("discord_channel_id");
         /* 237 */
         Saves.showPlayersOnline = conf.getBoolean("show_players_online");
         /* 238 */
@@ -509,24 +509,6 @@ public class MFC extends Plugin {
         /* 251 */
         /* 252 */
         Saves.onlyBungeecord = conf.getBoolean("use_only_bungeecord");
-        /* 255 */
-        for (Map.Entry<String, ServerInfo> server : ProxyServer.getInstance().getServers().entrySet()) {
-            /* 256 */
-            Long id = Long.valueOf(conf.getLong("server_names." + server.getKey()));
-            /* 257 */
-            if (id != null && id.longValue() != 0L) {
-                /* 258 */
-                serversChannelIDs.put(server.getKey(), id);
-                /* 259 */
-                serversPastCount.put(server.getKey(), Integer.valueOf(0));
-                /*     */
-            }
-            /*     */
-        }
-        /*     */
-        /* 264 */
-        /* 265 */
-        /*     */
     }
 
 

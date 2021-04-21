@@ -10,8 +10,7 @@ public class PlayerMove implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-        if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("hub")
-                || MFC.getInstance().getServer().getName().equalsIgnoreCase("hub")) {
+        if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("hub")) {
             Location l = e.getPlayer().getLocation();
             if (l.getBlockY() <= 20) {
                 e.getPlayer().performCommand("spawn");
