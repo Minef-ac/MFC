@@ -60,6 +60,9 @@ public class MFC extends JavaPlugin {
             api = provider.getProvider();
         }
 
+        /*bot = new Bot("ODE0NjcyMjYxODM0NDczNTMy.YDhQqw.YyltuP1kCiKhZBu42kqY_UuKOvU", "!");
+        bot.setBotThread(new ThreadBungee(ac.minef.mfc.bungee.MFC.getInstance()));*/
+
         Reload();
 
         this.isEnabled = false;
@@ -70,13 +73,13 @@ public class MFC extends JavaPlugin {
         getLogger().info("MFC BungeeCord mode activated!");
         getLogger().info("MFC enabled!");
 
-        SendEventMessageToDiscord(getServer().getServerName(), Saves.serverStartStyle, "#15ea0e");
+        // SendEventMessageToDiscord(getServer().getServerName(), Saves.serverStartStyle, "#15ea0e");
     }
 
     @Override
     public void onDisable() {
         getLogger().info("MFC disabled!");
-        SendEventMessageToDiscord(getServer().getServerName(), Saves.serverStopStyle, "#ee1212");
+        // SendEventMessageToDiscord(getServer().getServerName(), Saves.serverStopStyle, "#ee1212");
     }
 
     public String getRank(String p) {
@@ -107,11 +110,11 @@ public class MFC extends JavaPlugin {
     public void Reload() {
         loadFile();
         loadConfig(config);
-        UpdateStatus();
+        // UpdateStatus();
         getLogger().info("Reloaded.");
     }
 
-    private void UpdateStatus() {
+    /*private void UpdateStatus() {
         isEnabled = true;
         guild = bot.getBot().getGuildById(Saves.guildID);
         if (guild != null) {
@@ -127,7 +130,7 @@ public class MFC extends JavaPlugin {
         if (isEnabled) {
             getLogger().info("Everything set up correctly!");
         }
-    }
+    }*/
 
     public void loadConfig(Configuration conf) {
         Saves.guildID = conf.getLong("guild_id");

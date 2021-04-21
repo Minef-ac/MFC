@@ -35,7 +35,6 @@ public class MFC extends Plugin {
     private static MFC instance;
     public final String PREFIX = "!";
     public Bot bot;
-    public String TOKEN = "none";
     public TextChannel textChannel;
     public Map<String, Long> serversChannelIDs = new HashMap<>();
     public Map<String, Integer> serversPastCount = new HashMap<>();
@@ -76,72 +75,64 @@ public class MFC extends Plugin {
         LoadConfig(config);
         /*     */
         /*  89 */
-        if (!TOKEN.equals("none")) {
-            /*  90 */
-            bot = new Bot(TOKEN, "!");
-            /*  92 */
-            bot.addEvent(event -> {
+        /*  90 */
+        bot = new Bot("ODE0NjcyMjYxODM0NDczNTMy.YDhQqw.YyltuP1kCiKhZBu42kqY_UuKOvU", "!");
+        /*  92 */
+        bot.addEvent(event -> {
+            /*     */
+            if (event instanceof MessageReceivedEvent) {
                 /*     */
-                if (event instanceof MessageReceivedEvent) {
-                    /*     */
-                    MessageReceivedEvent e = (MessageReceivedEvent) event;
+                MessageReceivedEvent e = (MessageReceivedEvent) event;
 
-                    if (textChannel != null && guild != null) {
-                        /*     */
-                        if (e.getChannel().getIdLong() == Saves.textChannelID) {
-                            /*     */
-                            String nickname = Objects.requireNonNull(guild.getMember(e.getAuthor())).getNickname();
-                            /* 116 */
-                            String name = (Saves.useDiscordNicknames && nickname != null && !nickname.isEmpty()) ? nickname : e.getAuthor().getName();
-                            /*     */
-                            /*     */
-                            /*     */
-                            SendMessageToMinecraft(name, "", e.getMessage().getContentDisplay());
-                            /*     */
-                        } else {
-                            /*     */
-                            getLogger().info("Error: text channel or guild (discord server id) is not defined!");
-                            /*     */
-                        }
-                        /*     */
-                    }
+                if (textChannel != null && guild != null) {
                     /*     */
-                } else if (event instanceof StatusChangeEvent) {
-                    /*     */
-                    StatusChangeEvent e = (StatusChangeEvent) event;
-                    /*     */
-                    if (e.getNewStatus().name().equals("CONNECTED")) {
+                    if (e.getChannel().getIdLong() == Saves.textChannelID) {
                         /*     */
-                        getLogger().info("READY!");
+                        String nickname = Objects.requireNonNull(guild.getMember(e.getAuthor())).getNickname();
+                        /* 116 */
+                        String name = (Saves.useDiscordNicknames && nickname != null && !nickname.isEmpty()) ? nickname : e.getAuthor().getName();
                         /*     */
-                        if (!isSetUp) {
-                            /*     */
-                            UpdateStatus();
-                            /*     */
-                        }
+                        /*     */
+                        /*     */
+                        SendMessageToMinecraft(name, "", e.getMessage().getContentDisplay());
+                        /*     */
+                    } else {
+                        /*     */
+                        getLogger().info("Error: text channel or guild (discord server id) is not defined!");
                         /*     */
                     }
                     /*     */
                 }
                 /*     */
-                return false;
+            } else if (event instanceof StatusChangeEvent) {
                 /*     */
-            });
-            /* 142 */
-            bot.setBotThread(new ThreadBungee(this));
+                StatusChangeEvent e = (StatusChangeEvent) event;
+                /*     */
+                if (e.getNewStatus().name().equals("CONNECTED")) {
+                    /*     */
+                    getLogger().info("READY!");
+                    /*     */
+                    if (!isSetUp) {
+                        /*     */
+                        UpdateStatus();
+                        /*     */
+                    }
+                    /*     */
+                }
+                /*     */
+            }
             /*     */
-            /* 144 */
-            UpdatePlayerCount();
+            return false;
+            /*     */
+        });
+        /* 142 */
+        bot.setBotThread(new ThreadBungee(this));
+        /*     */
+        /* 144 */
+        UpdatePlayerCount();
 
-            bungeeBroadcast();
-            /*     */
-        } else {
-            /* 146 */
-            isEnabled = false;
-            /* 147 */
-            getLogger().info("Please specify the bot's token.");
-            /*     */
-        }
+        bungeeBroadcast();
+        /*     */
     }
 
     private void bungeeBroadcast() {
@@ -470,12 +461,6 @@ public class MFC extends Plugin {
     }
 
     private void LoadConfig(Configuration conf) {
-
-
-
-        /* 234 */
-        TOKEN = conf.getString("TOKEN");
-        /* 235 */
         Saves.guildID = conf.getLong("guild_id");
         /* 236 */
         Saves.textChannelID = conf.getLong("discord_channel_id");
