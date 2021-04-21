@@ -3,15 +3,12 @@ package ac.minef.mfc.bungee.listeners;
 import ac.minef.mfc.bungee.MFC;
 import ac.minef.mfc.bungee.Saves;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-
-import java.util.concurrent.TimeUnit;
 
 public class Quit implements Listener {
 
@@ -54,33 +51,6 @@ public class Quit implements Listener {
         }
         /* 306 */
         MFC.getInstance().UpdatePlayerCount();
-        /* 307 */
-        if (Saves.areSeparateServer) {
-            /* 308 */
-            final ServerInfo serveri = e.getPlayer().getServer().getInfo();
-            /* 309 */
-            if (Saves.discordLeftMessageEnabled) {
-                /* 310 */
-                MFC.getInstance().SendEventMessageToDiscord(e.getPlayer().getName(), Saves.leaveDiscordStyle, MFC.getInstance().serversChannelIDs.get(serveri.getName()).longValue());
-                /*     */
-            }
-            /* 312 */
-            ProxyServer.getInstance().getScheduler().schedule(MFC.getInstance(), new Runnable()
-                    /*     */ {
-                /*     */
-                public void run() {
-                    /* 315 */
-                    if (Saves.separateServerCount) {
-                        /* 316 */
-                        MFC.getInstance().UpdatePlayerCountOnServer(serveri);
-                        /*     */
-                    }
-                    /*     */
-                }
-                /* 319 */
-            }, 1L, TimeUnit.SECONDS);
-            /*     */
-        }
         /*     */
     }
 

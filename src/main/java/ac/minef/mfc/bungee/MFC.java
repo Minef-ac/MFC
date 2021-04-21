@@ -12,7 +12,6 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.StatusChangeEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -23,8 +22,6 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.awt.*;
 import java.io.*;
@@ -49,7 +46,6 @@ public class MFC extends Plugin {
     TextChannel commandChannel;
     boolean isUsingVanishOnSpigot = false;
     Configuration config;
-    LuckPerms api;
     int bcMsg;
 
     public static MFC getInstance() {
@@ -70,12 +66,6 @@ public class MFC extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Minefactions());
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new MFCB(this));
-
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        if (provider != null) {
-            api = provider.getProvider();
-
-        }
 
 
         /*     */
