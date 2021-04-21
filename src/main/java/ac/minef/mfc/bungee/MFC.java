@@ -315,6 +315,33 @@ public class MFC extends Plugin {
         }
         /*     */
     }
+
+    public void SendEventMessageToDiscord(String name, String structure, String color) {
+        /* 324 */
+        if (isEnabled && isSetUp && textChannel != null) {
+            /* 325 */
+            String toSend = structure.replaceAll("<name>", name);
+            /* 326 */
+            if (Saves.useBuilder) {
+                /* 327 */
+                EmbedBuilder builder = new EmbedBuilder();
+                /* 328 */
+                builder.setTitle(toSend).setColor(Color.decode(color));
+                /* 329 */
+                textChannel.sendMessage(builder.build()).complete();
+                /*     */
+            } else {
+                /* 331 */
+                textChannel.sendMessage(toSend).queue();
+                /*     */
+            }
+            /*     */
+        }
+        if (!isEnabled) getLogger().severe("NOT ENABLED");
+        if (!isSetUp) getLogger().severe("NOT SETUP");
+        if (textChannel == null) getLogger().severe("TEXT CHANNEL NOT SETUP");
+        /*     */
+    }
     /*     */
 
     public void UpdatePlayerCountOnServer(ServerInfo server) {

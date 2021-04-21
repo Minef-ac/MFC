@@ -13,7 +13,7 @@ public class Connect implements Listener {
         /* 271 */
         MFC.getInstance().UpdatePlayerCount();
         /* 272 */
-        MFC.getInstance().SendEventMessageToDiscord(e.getPlayer().getName(), Saves.joinDiscordStyle);
+        MFC.getInstance().SendEventMessageToDiscord(e.getPlayer().getName(), Saves.joinDiscordStyle, "#26ce16");
         /* 273 */
         /*     */
     }
