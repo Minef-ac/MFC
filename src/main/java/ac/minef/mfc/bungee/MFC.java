@@ -259,28 +259,13 @@ public class MFC extends Plugin {
             e.printStackTrace();
         }
         return 0;
-    }*/
 
-    public void SendMessageToDiscordChannel(String message, Long channelID) {
-        /* 394 */
-        getLogger().severe(message + " :: " + channelID);
-        if (isEnabled && isSetUp) {
-            getLogger().severe(message + " :: " + channelID);
-            /* 395 */
-            guild.getTextChannelById(channelID).sendMessage(message).queue();
-            /*     */
-        }
-        /*     */
-    }
+     */
 
-    /*     */
-    /*     */
     public void SendMessageToDiscord(String message) {
         /* 400 */
-        getLogger().severe(message + " ::");
         if (isEnabled && isSetUp && textChannel != null) {
             /* 401 */
-            getLogger().severe(message + " ::");
             textChannel.sendMessage(message).queue();
             /*     */
         }
@@ -289,14 +274,11 @@ public class MFC extends Plugin {
 
     public void SendEventMessageToDiscord(String name, String structure) {
         /* 324 */
-        getLogger().severe("i" + name + " :: " + structure);
         if (isEnabled && isSetUp && textChannel != null) {
             /* 325 */
             String toSend = structure.replaceAll("<name>", name);
-            getLogger().severe("0" + toSend + " :: " + structure);
             /* 326 */
             if (Saves.useBuilder) {
-                getLogger().severe("1" + toSend + " :: " + structure);
                 /* 327 */
                 EmbedBuilder builder = new EmbedBuilder();
                 /* 328 */
@@ -550,7 +532,8 @@ public class MFC extends Plugin {
 
     private void SendMessageToMinecraft(String name, String role, String message) {
         /* 420 */
-        if (!role.contains("Minef.ac")) {
+        if (!role.toLowerCase().contains("bot") && !message.isEmpty()
+                && !role.isEmpty() && !name.toLowerCase().contains("bot")) {
             if (!Saves.canUseColorCodes) {
                 /* 421 */
                 message = message.replaceAll("§", "");

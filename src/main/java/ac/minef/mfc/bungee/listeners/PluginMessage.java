@@ -55,10 +55,7 @@ public class PluginMessage implements Listener {
                         toSend = toSend.replaceAll("<name>", name);
                         /* 574 */
                         toSend = ChatColor.stripColor(toSend);
-                        /* 581 */
-                        if (!toSend.contains("<Minef.ac Bot>")) {
-                            MFC.getInstance().SendMessageToDiscord(toSend);
-                        }
+                        MFC.getInstance().SendMessageToDiscord(toSend);
                         /*     */
                     }
                     /* 584 */
