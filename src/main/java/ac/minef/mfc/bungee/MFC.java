@@ -16,7 +16,6 @@ import net.luckperms.api.LuckPermsProvider;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -66,16 +65,10 @@ public class MFC extends Plugin {
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new MFCB(this));
 
+        MFC.getInstance().SendMessageToDiscord(":white_check_mark: **Minef.ac network online");
 
-        /*     */
-        /*  81 */
         GetDefaultConfig();
-        /*     */
-        /*  83 */
         LoadConfig(config);
-        /*     */
-        /*  89 */
-        /*  90 */
         bot = new Bot("ODE0NjcyMjYxODM0NDczNTMy.YDhQqw.YyltuP1kCiKhZBu42kqY_UuKOvU", "!");
         /*  92 */
         bot.addEvent(event -> {
@@ -134,6 +127,11 @@ public class MFC extends Plugin {
 
         bungeeBroadcast();
         /*     */
+    }
+
+    @Override
+    public void onDisable() {
+        MFC.getInstance().SendMessageToDiscord(":octagonal_sign: **Minef.ac network offline");
     }
 
     private void bungeeBroadcast() {
@@ -294,121 +292,47 @@ public class MFC extends Plugin {
     /*     */
     /*     */
     public void SendEventMessageToDiscord(String name, String structure, long channelID) {
-        /* 337 */
         if (isEnabled && isSetUp) {
-            /* 338 */
             String toSend = structure.replaceAll("<name>", name);
-            /* 339 */
             if (Saves.useBuilder) {
-                /* 340 */
                 EmbedBuilder builder = new EmbedBuilder();
-                /* 341 */
                 builder.setTitle(toSend).setColor(Saves.color);
-                /* 342 */
                 Objects.requireNonNull(bot.getBot().getTextChannelById(channelID)).sendMessage(builder.build()).complete();
-                /*     */
             } else {
-                /* 344 */
                 Objects.requireNonNull(bot.getBot().getTextChannelById(channelID)).sendMessage(toSend).queue();
-                /*     */
             }
-            /*     */
         }
-        /*     */
     }
 
     public void SendEventMessageToDiscord(String name, String structure, String color) {
-        /* 324 */
         if (isEnabled && isSetUp && textChannel != null) {
-            /* 325 */
             String toSend = structure.replaceAll("<name>", name);
-            /* 326 */
             if (Saves.useBuilder) {
-                /* 327 */
                 EmbedBuilder builder = new EmbedBuilder();
-                /* 328 */
                 builder.setTitle(toSend).setColor(Color.decode(color));
-                /* 329 */
                 textChannel.sendMessage(builder.build()).complete();
-                /*     */
             } else {
-                /* 331 */
                 textChannel.sendMessage(toSend).queue();
-                /*     */
             }
-            /*     */
         }
         if (!isEnabled) getLogger().severe("NOT ENABLED");
         if (!isSetUp) getLogger().severe("NOT SETUP");
         if (textChannel == null) getLogger().severe("TEXT CHANNEL NOT SETUP");
-        /*     */
-    }
-    /*     */
-
-    public void UpdatePlayerCountOnServer(ServerInfo server) {
-        /* 463 */
-        int size = server.getPlayers().size();
-        /* 464 */
-        /*     */
-    }
-
-    private void SendMessageToMinecraftServer(String name, String role, String message, String serverName) {
-        /* 406 */
-        if (!Saves.canUseColorCodes) {
-            /* 407 */
-            message = message.replaceAll("§", "");
-            /*     */
-        }
-        /* 409 */
-        String toSend = Saves.inGameChatStyle.replaceAll("&", "§");
-        /* 410 */
-        toSend = toSend.replaceAll("<name>", name);
-        /* 411 */
-        toSend = toSend.replaceAll("<message>", message);
-        /* 412 */
-        toSend = toSend.replaceAll("<role>", role);
-        /* 413 */
-        toSend = FixColors(toSend);
-        /* 414 */
-        for (ProxiedPlayer p : ProxyServer.getInstance().getServerInfo(serverName).getPlayers()) {
-            /* 415 */
-            p.sendMessage(new TextComponent(toSend));
-            /*     */
-        }
-        /*     */
     }
 
     public void UpdatePlayerCount() {
-        /* 481 */
         if (isEnabled) {
-            /* 485 */
             if (Saves.showPlayersOnline) {
-                /* 486 */
-                ProxyServer.getInstance().getScheduler().schedule(this, new Runnable()
-                        /*     */ {
-                    /*     */
-                    public void run() {
-                        /* 489 */
-                        int size = GetPlayerCount();
-                        /* 490 */
-                        if (Saves.botPlayingText != null && !Saves.botPlayingText.equals("")) {
-                            /* 491 */
-                            String botText = Saves.botPlayingText.replaceAll("<number>", "" + size);
-                            /*     */
-                        } else {
-                            /* 494 */
-                            String botText = size + ((size == 1) ? " player" : " players") + " on the server.";
-                            /*     */
-                        }
-                        /*     */
+                ProxyServer.getInstance().getScheduler().schedule(this, () -> {
+                    int size = GetPlayerCount();
+                    if (Saves.botPlayingText != null && !Saves.botPlayingText.equals("")) {
+                        String botText = Saves.botPlayingText.replaceAll("<number>", "" + size);
+                    } else {
+                        String botText = size + ((size == 1) ? " player" : " players") + " on the server.";
                     }
-                    /* 498 */
                 }, 1L, TimeUnit.SECONDS);
-                /*     */
             }
-            /*     */
         }
-        /*     */
     }
 
     public int GetPlayerCount() {
