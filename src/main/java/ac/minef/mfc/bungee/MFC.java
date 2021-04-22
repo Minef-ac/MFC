@@ -93,12 +93,12 @@ public class MFC extends Plugin {
         UpdatePlayerCount();
         bungeeBroadcast();
 
-        MFC.getInstance().SendMessageToDiscord(":white_check_mark: **Minef.ac network online");
+        MFC.getInstance().SendMessageToDiscord(":white_check_mark: **Minef.ac network online**");
     }
 
     @Override
     public void onDisable() {
-        MFC.getInstance().SendMessageToDiscord(":octagonal_sign: **Minef.ac network offline");
+        MFC.getInstance().SendMessageToDiscord(":octagonal_sign: **Minef.ac network offline**");
     }
 
     private void bungeeBroadcast() {
