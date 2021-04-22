@@ -52,7 +52,7 @@ public class MFC extends Plugin {
 
     public void onEnable() {
         instance = this;
-        /*  74 */
+
         ProxyServer.getInstance().getPluginManager().registerListener(this, new Chat());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new Connect());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PluginMessage());
@@ -65,68 +65,35 @@ public class MFC extends Plugin {
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new MFCB(this));
 
-        MFC.getInstance().SendMessageToDiscord(":white_check_mark: **Minef.ac network online");
-
         GetDefaultConfig();
         LoadConfig(config);
         bot = new Bot("ODE0NjcyMjYxODM0NDczNTMy.YDhQqw.YyltuP1kCiKhZBu42kqY_UuKOvU", "!");
-        /*  92 */
         bot.addEvent(event -> {
-            /*     */
             if (event instanceof MessageReceivedEvent) {
-                /*     */
                 MessageReceivedEvent e = (MessageReceivedEvent) event;
-
                 if (textChannel != null && guild != null) {
-                    /*     */
                     if (e.getChannel().getIdLong() == Saves.textChannelID) {
-                        /*     */
                         String nickname = Objects.requireNonNull(guild.getMember(e.getAuthor())).getNickname();
-                        /* 116 */
                         String name = (Saves.useDiscordNicknames && nickname != null && !nickname.isEmpty()) ? nickname : e.getAuthor().getName();
-                        /*     */
-                        /*     */
-                        /*     */
                         SendMessageToMinecraft(name, "", e.getMessage().getContentDisplay());
-                        /*     */
-                    } else {
-                        /*     */
-
-                        /*     */
                     }
-                    /*     */
                 }
-                getLogger().info("Error: text channel or guild (discord server id) is not defined!");
-                /*     */
             } else if (event instanceof StatusChangeEvent) {
-                /*     */
                 StatusChangeEvent e = (StatusChangeEvent) event;
-                /*     */
                 if (e.getNewStatus().name().equals("CONNECTED")) {
-                    /*     */
                     getLogger().info("READY!");
-                    /*     */
                     if (!isSetUp) {
-                        /*     */
                         UpdateStatus();
-                        /*     */
                     }
-                    /*     */
                 }
-                /*     */
             }
-            /*     */
             return false;
-            /*     */
         });
-        /* 142 */
         bot.setBotThread(new ThreadBungee(this));
-        /*     */
-        /* 144 */
         UpdatePlayerCount();
-
         bungeeBroadcast();
-        /*     */
+
+        MFC.getInstance().SendMessageToDiscord(":white_check_mark: **Minef.ac network online");
     }
 
     @Override
