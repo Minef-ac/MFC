@@ -1,9 +1,3 @@
-# Plugin made by alandioda [BungeeCord]
-
-# [Bot settings]
-TOKEN: ODE0NjcyMjYxODM0NDczNTMy.YDhQqw.YyltuP1kCiKhZBu42kqY_UuKOvU
-guild_id: 814671813032411156
-discord_channel_id: 814671928249286676
 # If you want to use only this bot on the bungeecord.
 use_only_bungeecord: false
 

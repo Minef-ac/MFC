@@ -18,8 +18,6 @@ public class Saves {
 
     public static boolean useBuilder;
 
-    public static boolean areSeparateServer;
-
     public static boolean separateServerCount;
 
     public static boolean onlyBungeecord;

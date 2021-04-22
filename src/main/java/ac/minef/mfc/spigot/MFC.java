@@ -3,10 +3,6 @@ package ac.minef.mfc.spigot;
 import ac.minef.mfc.spigot.commands.MFCCommand;
 import ac.minef.mfc.spigot.commands.Vote;
 import ac.minef.mfc.spigot.listeners.*;
-import com.tjplaysnow.discord.object.Bot;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
@@ -29,11 +25,8 @@ public class MFC extends JavaPlugin {
 
     private static MFC instance;
     public boolean isEnabled = true;
-    public TextChannel textChannel;
     FileConfiguration config;
     LuckPerms api;
-    Bot bot;
-    Guild guild;
 
     public static MFC getInstance() {
         return instance;
@@ -59,9 +52,6 @@ public class MFC extends JavaPlugin {
         if (provider != null) {
             api = provider.getProvider();
         }
-
-        /*bot = new Bot("ODE0NjcyMjYxODM0NDczNTMy.YDhQqw.YyltuP1kCiKhZBu42kqY_UuKOvU", "!");
-        bot.setBotThread(new ThreadBungee(ac.minef.mfc.bungee.MFC.getInstance()));*/
 
         Reload();
 
@@ -93,18 +83,7 @@ public class MFC extends JavaPlugin {
             public void run() {
                 getServer().dispatchCommand(getServer().getConsoleSender(), cmd);
             }
-        }.runTaskLater(this, 5);   // Your plugin instance, the time to be delayed.
-    }
-
-    public void SendEventMessageToDiscord(String server, String structure, String color) {
-        String toSend = structure.replaceAll("<server>", server);
-        if (ac.minef.mfc.spigot.Saves.useBuilder) {
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.setTitle(toSend).setColor(Color.decode(color));
-            textChannel.sendMessage(builder.build()).complete();
-        } else {
-            textChannel.sendMessage(toSend).queue();
-        }
+        }.runTaskLater(this, 1);   // Your plugin instance, the time to be delayed.
     }
 
     public void Reload() {
@@ -113,24 +92,6 @@ public class MFC extends JavaPlugin {
         // UpdateStatus();
         getLogger().info("Reloaded.");
     }
-
-    /*private void UpdateStatus() {
-        isEnabled = true;
-        guild = bot.getBot().getGuildById(Saves.guildID);
-        if (guild != null) {
-            textChannel = guild.getTextChannelById(ac.minef.mfc.spigot.Saves.textChannelID);
-            if (textChannel == null) {
-                isEnabled = false;
-                getLogger().info("The text channel ID is not set up properly!");
-            }
-        } else {
-            isEnabled = false;
-            getLogger().info("The guild ID is not set up properly!");
-        }
-        if (isEnabled) {
-            getLogger().info("Everything set up correctly!");
-        }
-    }*/
 
     public void loadConfig(Configuration conf) {
         Saves.guildID = conf.getLong("guild_id");

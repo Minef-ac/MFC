@@ -126,15 +126,6 @@ public class PluginMessage implements Listener {
                     MFC.getInstance().UpdatePlayerCount();
                     /* 616 */
                     MFC.getInstance().SendEventMessageToDiscord(input, Saves.leaveDiscordStyle);
-                    /* 617 */
-                    if (Saves.separateServerCount) {
-                        /* 618 */
-                        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(input);
-                        /* 619 */
-                        MFC.getInstance().UpdatePlayerCountOnServer(player.getServer().getInfo());
-                        /*     */
-                    }
-                    /* 621 */
                 } else if (channel.equals("DiscordUnVanish")) {
                     /* 622 */
                     String input = in.readUTF();
@@ -148,15 +139,6 @@ public class PluginMessage implements Listener {
                     MFC.getInstance().UpdatePlayerCount();
                     /* 627 */
                     MFC.getInstance().SendEventMessageToDiscord(input, Saves.joinDiscordStyle);
-                    /* 628 */
-                    if (Saves.separateServerCount) {
-                        /* 629 */
-                        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(input);
-                        /* 630 */
-                        MFC.getInstance().UpdatePlayerCountOnServer(player.getServer().getInfo());
-                        /*     */
-                    }
-                    /*     */
                 }
                 /* 633 */
             } catch (IOException e1) {

@@ -98,11 +98,12 @@ public class MFC extends Plugin {
                         /*     */
                     } else {
                         /*     */
-                        getLogger().info("Error: text channel or guild (discord server id) is not defined!");
+
                         /*     */
                     }
                     /*     */
                 }
+                getLogger().info("Error: text channel or guild (discord server id) is not defined!");
                 /*     */
             } else if (event instanceof StatusChangeEvent) {
                 /*     */
@@ -488,9 +489,9 @@ public class MFC extends Plugin {
     }
 
     private void LoadConfig(Configuration conf) {
-        Saves.guildID = conf.getLong("guild_id");
+        Saves.guildID = Long.valueOf("814671813032411156");
         /* 236 */
-        Saves.textChannelID = conf.getLong("discord_channel_id");
+        Saves.textChannelID = Long.valueOf("814671928249286676");
         /* 237 */
         Saves.showPlayersOnline = conf.getBoolean("show_players_online");
         /* 238 */
