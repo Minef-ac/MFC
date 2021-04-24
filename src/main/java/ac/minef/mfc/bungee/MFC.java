@@ -9,6 +9,7 @@ import com.google.common.io.ByteStreams;
 import com.tjplaysnow.discord.object.Bot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.StatusChangeEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -75,7 +76,8 @@ public class MFC extends Plugin {
                     if (e.getChannel().getIdLong() == Saves.textChannelID) {
                         String nickname = Objects.requireNonNull(guild.getMember(e.getAuthor())).getNickname();
                         String name = (Saves.useDiscordNicknames && nickname != null && !nickname.isEmpty()) ? nickname : e.getAuthor().getName();
-                        SendMessageToMinecraft(name, "", e.getMessage().getContentDisplay());
+                        Role role = (Objects.requireNonNull(e.getMember()).getRoles().size() > 0) ? e.getMember().getRoles().get(0) : null;
+                        SendMessageToMinecraft(name, (role != null) ? role.getName() : "", e.getMessage().getContentDisplay());
                     }
                 }
             } else if (event instanceof StatusChangeEvent) {
@@ -417,32 +419,17 @@ public class MFC extends Plugin {
 
 
     private void SendMessageToMinecraft(String name, String role, String message) {
-        /* 420 */
-        if (!role.toLowerCase().contains("bot") && !message.isEmpty()
-                && !role.isEmpty() && !name.toLowerCase().contains("bot")) {
-            if (!Saves.canUseColorCodes) {
-                /* 421 */
-                message = message.replaceAll("§", "");
-                /*     */
-            }
-            /* 423 */
-            String toSend = Saves.inGameChatStyle.replaceAll("&", "§");
-            /* 424 */
-            toSend = toSend.replaceAll("<name>", name);
-            /* 425 */
-            toSend = toSend.replaceAll("<message>", message);
-            /* 426 */
-            toSend = toSend.replaceAll("<role>", role);
-            /* 427 */
-            toSend = FixColors(toSend);
-            /* 428 */
-            for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-                /* 429 */
-                p.sendMessage(new TextComponent(toSend));
-                /*     */
-            }
+        if (!Saves.canUseColorCodes) {
+            message = message.replaceAll("§", "");
         }
-        /*     */
+        String toSend = Saves.inGameChatStyle.replaceAll("&", "§");
+        toSend = toSend.replaceAll("<name>", name);
+        toSend = toSend.replaceAll("<message>", message);
+        toSend = toSend.replaceAll("<role>", role);
+        toSend = FixColors(toSend);
+        for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+            p.sendMessage(new TextComponent(toSend));
+        }
     }
 
     private String FixColors(String message) {

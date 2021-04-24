@@ -39,6 +39,7 @@ public class MFC extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Armor(), this);
         getServer().getPluginManager().registerEvents(new AsyncPlayerChat(), this);
         getServer().getPluginManager().registerEvents(new Connections(), this);
+        getServer().getPluginManager().registerEvents(new EntityDeath(), this);
         getServer().getPluginManager().registerEvents(new PlayerCommand(), this);
         getServer().getPluginManager().registerEvents(new InventoryClick(), this);
         getServer().getPluginManager().registerEvents(new PlayerDropItem(), this);
