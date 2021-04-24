@@ -17,7 +17,6 @@ public class EntityDeath implements Listener {
         if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("factions")) {
             if (e.getEntity() != null && e.getEntity().getType().equals(EntityType.VILLAGER)) {
                 int i = ThreadLocalRandom.current().nextInt(1, 3 + 1);
-                MFC.getInstance().getLogger().severe(i + " EMERALDS");
                 e.getDrops().add(new ItemStack(Material.EMERALD, i));
             }
         }

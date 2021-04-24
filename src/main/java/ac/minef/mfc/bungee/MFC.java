@@ -76,8 +76,12 @@ public class MFC extends Plugin {
                     if (e.getChannel().getIdLong() == Saves.textChannelID) {
                         String nickname = Objects.requireNonNull(guild.getMember(e.getAuthor())).getNickname();
                         String name = (Saves.useDiscordNicknames && nickname != null && !nickname.isEmpty()) ? nickname : e.getAuthor().getName();
-                        Role role = (Objects.requireNonNull(e.getMember()).getRoles().size() > 0) ? e.getMember().getRoles().get(0) : null;
-                        SendMessageToMinecraft(name, (role != null) ? role.getName() : "", e.getMessage().getContentDisplay());
+                        Role role = null;
+                        for (Role r : Objects.requireNonNull(e.getMember()).getRoles()) {
+                            role = r;
+                        }
+                        if (!role.getName().toLowerCase().contains("bot"))
+                            SendMessageToMinecraft(name, role.getName(), e.getMessage().getContentDisplay());
                     }
                 }
             } else if (event instanceof StatusChangeEvent) {
@@ -94,13 +98,13 @@ public class MFC extends Plugin {
         bot.setBotThread(new ThreadBungee(this));
         UpdatePlayerCount();
         bungeeBroadcast();
-
-        MFC.getInstance().SendMessageToDiscord(":white_check_mark: **Minef.ac network online");
     }
 
     @Override
     public void onDisable() {
-        MFC.getInstance().SendMessageToDiscord(":octagonal_sign: **Minef.ac network offline");
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle(":octagonal_sign:  **Minef.ac network offline**").setColor(Color.decode("#FFFF00"));
+        textChannel.sendMessage(builder.build()).complete();
     }
 
     private void bungeeBroadcast() {
@@ -232,34 +236,21 @@ public class MFC extends Plugin {
     }
 
     public void SendEventMessageToDiscord(String name, String structure) {
-        /* 324 */
         if (isEnabled && isSetUp && textChannel != null) {
-            /* 325 */
             String toSend = structure.replaceAll("<name>", name);
-            /* 326 */
             if (Saves.useBuilder) {
-                /* 327 */
                 EmbedBuilder builder = new EmbedBuilder();
-                /* 328 */
                 builder.setTitle(toSend).setColor(Saves.color);
-                /* 329 */
                 textChannel.sendMessage(builder.build()).complete();
-                /*     */
             } else {
-                /* 331 */
                 textChannel.sendMessage(toSend).queue();
-                /*     */
             }
-            /*     */
         }
         if (!isEnabled) getLogger().severe("NOT ENABLED");
         if (!isSetUp) getLogger().severe("NOT SETUP");
         if (textChannel == null) getLogger().severe("TEXT CHANNEL NOT SETUP");
-        /*     */
     }
 
-    /*     */
-    /*     */
     public void SendEventMessageToDiscord(String name, String structure, long channelID) {
         if (isEnabled && isSetUp) {
             String toSend = structure.replaceAll("<name>", name);
@@ -305,115 +296,65 @@ public class MFC extends Plugin {
     }
 
     public int GetPlayerCount() {
-        /* 504 */
         int size = ProxyServer.getInstance().getPlayers().size();
-        /* 505 */
         if (!Saves.onlyBungeecord) {
-            /* 506 */
             size = playerInfo.size();
-            /* 507 */
             for (Map.Entry<String, Boolean> entry : playerInfo.entrySet()) {
-                /* 508 */
                 if (entry.getValue()) {
-                    /* 509 */
                     size--;
-                    /*     */
                 }
-                /*     */
             }
-            /*     */
         }
-        /* 513 */
         return size;
-        /*     */
     }
 
     private void UpdateStatus() {
-        /* 160 */
         isEnabled = true;
-        /* 161 */
         isSetUp = false;
-        /* 162 */
         guild = bot.getBot().getGuildById(Saves.guildID);
-        /* 163 */
         if (guild != null) {
-            /* 170 */
             textChannel = guild.getTextChannelById(Saves.textChannelID);
-            /* 171 */
             if (textChannel == null) {
-                /* 172 */
                 isEnabled = false;
-                /* 173 */
                 getLogger().info("The text channel ID is not set up properly!");
-                /*     */
             }
-            /*     */
         } else {
-            /*     */
-            /* 178 */
             isEnabled = false;
-            /* 179 */
             getLogger().info("The guild ID is not set up properly!");
-            /*     */
         }
-        /* 181 */
         if (isEnabled) {
-            /* 182 */
             getLogger().info("Everything set up correctly!");
-            /*     */
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.setTitle(":white_check_mark:  **Minef.ac network online**").setColor(Color.decode("#FFFF00"));
+            textChannel.sendMessage(builder.build()).complete();
         }
-        /* 184 */
         isSetUp = true;
-        /*     */
     }
 
     public void reloadConfig() {
-        /* 152 */
         GetDefaultConfig();
-        /* 153 */
         LoadConfig(config);
-        /* 154 */
         UpdateStatus();
-        /* 155 */
         UpdatePlayerCount();
-        /* 156 */
         getLogger().info("Reloaded.");
-        /*     */
     }
 
     private void LoadConfig(Configuration conf) {
         Saves.guildID = Long.valueOf("814671813032411156");
-        /* 236 */
         Saves.textChannelID = Long.valueOf("814671928249286676");
-        /* 237 */
         Saves.showPlayersOnline = conf.getBoolean("show_players_online");
-        /* 238 */
         Saves.inGameChatStyle = conf.getString("minecraft_chat");
-        /* 239 */
         Saves.discordChatStyle = conf.getString("discord_chat");
-        /* 240 */
         Saves.discordJoinedMessageEnabled = conf.getBoolean("discord_joined_message_enabled");
-        /* 241 */
         Saves.discordLeftMessageEnabled = conf.getBoolean("discord_left_message_enabled");
-        /* 242 */
         Saves.useDiscordNicknames = conf.getBoolean("use_discord_nicknames");
-        /* 243 */
         Saves.joinDiscordStyle = conf.getString("discord_joined_message");
-        /* 244 */
         Saves.leaveDiscordStyle = conf.getString("discord_left_message");
-        /* 245 */
         Saves.canUseColorCodes = conf.getBoolean("colorcodes_enabled");
-        /* 246 */
         Saves.useBuilder = conf.getBoolean("use_fancy_border");
-        /* 247 */
         Saves.color = Color.decode("#" + config.getString("builder_color"));
-        /* 248 */
         Saves.botPlayingText = conf.getString("bot_playing_text");
-        /* 249 */
-        /* 250 */
         Saves.useMinecraftNicknames = conf.getBoolean("use_minecraft_nicknames");
-        /* 251 */
-        /* 252 */
         Saves.onlyBungeecord = conf.getBoolean("use_only_bungeecord");
     }
 
@@ -433,57 +374,30 @@ public class MFC extends Plugin {
     }
 
     private String FixColors(String message) {
-        /* 434 */
         String color = "0123456789abcdef";
-        /* 435 */
         String exception = "klmnor";
-        /*     */
-        /* 437 */
         String newMessage = "";
-        /* 438 */
         String cPrifix = "";
-        /* 439 */
         boolean isPrifix = false;
-        /* 440 */
         char[] seq = message.toCharArray();
-        /*     */
-        /* 442 */
         for (int i = 0; i < seq.length; i++) {
-            /* 443 */
             char c = seq[i];
-            /* 444 */
             if (isPrifix) {
-                /* 445 */
                 char lc = Character.toLowerCase(seq[i]);
-                /* 446 */
                 if (color.indexOf(lc) > 0) {
-                    /* 447 */
                     cPrifix = "§" + lc;
-                    /* 448 */
                 } else if (exception.indexOf(lc) > 0) {
-                    /* 449 */
                     cPrifix = cPrifix + "§" + lc;
-                    /*     */
                 }
-                /*     */
             }
-            /* 452 */
             isPrifix = (c == '§');
-            /* 453 */
             if (c == ' ') {
-                /* 454 */
                 newMessage = newMessage + " " + cPrifix;
-                /*     */
             } else {
-                /* 456 */
                 newMessage = newMessage + c;
-                /*     */
             }
-            /*     */
         }
-        /* 459 */
         return newMessage;
-        /*     */
     }
 
     void GetDefaultConfig() {
