@@ -37,12 +37,6 @@ import java.util.List;
     /* 36 */   public static List<String> bannedWords = new ArrayList<>();
     /* 37 */   public static List<String> bannedPrefixes = new ArrayList<>();
     /* 38 */   public static List<String> bannedFWords = new ArrayList<>();
-    /* 39 */   public static List<String> bannedFPrefixes = new ArrayList<>();
-    /*    */
+    public static List<String> bannedFPrefixes = new ArrayList<>();
+    public static long backpacks;
 }
-
-
-/* Location:              D:\Users\Luke\Downloads\DCWM.jar!\eu\mip\alandioda\DCWM\spigot\Saves.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */

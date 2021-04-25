@@ -69,6 +69,13 @@ public class MFC extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        File configFile = new File(getDataFolder(), "config.yml");
+        try {
+            config.save(configFile);
+        } catch (IOException e) {
+            getLogger().severe("Config failed to save!");
+            e.printStackTrace();
+        }
         getLogger().info("MFC disabled!");
         // SendEventMessageToDiscord(getServer().getServerName(), Saves.serverStopStyle, "#ee1212");
     }
@@ -96,6 +103,7 @@ public class MFC extends JavaPlugin {
 
     public void loadConfig(Configuration conf) {
         Saves.guildID = conf.getLong("guild_id");
+        Saves.backpacks = conf.getLong("backpacks");
         Saves.textChannelID = conf.getLong("discord_channel_id");
         Saves.showPlayersOnline = conf.getBoolean("show_players_online");
         Saves.inGameChatStyle = conf.getString("minecraft_chat");
