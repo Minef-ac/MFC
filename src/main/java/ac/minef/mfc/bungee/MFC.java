@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MFC extends Plugin {
-    private static final String avatarURL = "https://crafatar.com/avatars/<uuid>?overlay";
+    private static final String avatarURL = "https://crafatar.com/avatars/<uuid>?overlay&size=64";
 
     private static MFC instance;
     public final String PREFIX = "!";
