@@ -23,6 +23,8 @@ dependencies {
     implementation 'com.github.TJPlaysNow:Discord-Bot-API---JDA:bb783a3816'
     compileOnly 'net.dv8tion:JDA:4.2.0_189'
     compileOnly 'net.luckperms:api:5.3'
+
+    compileOnly fileTree(dir: 'libs', include: '*.jar')
 }
 
 compileJava.options.encoding = 'UTF-8'
