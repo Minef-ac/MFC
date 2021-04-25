@@ -1,7 +1,6 @@
 package ac.minef.mfc.spigot;
 
 import ac.minef.mfc.spigot.commands.MFCCommand;
-import ac.minef.mfc.spigot.commands.Vote;
 import ac.minef.mfc.spigot.listeners.*;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
@@ -46,8 +45,8 @@ public class MFC extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new SparkyPunish(), this);
+
         getCommand("mfc").setExecutor(new MFCCommand());
-        getCommand("vote").setExecutor(new Vote());
 
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {

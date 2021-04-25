@@ -32,7 +32,7 @@ public class AsyncPlayerChat implements Listener {
                         || m.contains("nigg") || m.contains("nig ")
                         || m.contains("n1g") || m.contains("n3gro")
                         || m.contains("negro") || m.contains("kys")
-                        || m.contains("fck")
+                        || m.contains("fck") || m.contains("retard")
                         || m.contains("cunt") || m.contains("penis")
                         || m.contains("peenis") || m.contains("pen15")
                         || m.contains("fag") || m.contains("phag")
@@ -41,9 +41,7 @@ public class AsyncPlayerChat implements Listener {
                         || m.contains("dick") || m.contains("cock")
                         || m.contains("nigger") || m.contains("aggo")
                         || m.contains("tits") || m.contains("puss")
-                        || m.contains("0ck") || m.contains("aqg")
-                        || m.contains("retard")) {
-
+                        || m.contains("0ck") || m.contains("aqg")) {
                     TextComponent msg = new TextComponent("\n        §8[§c!§8]§e "
                             + e.getPlayer().getName() + " §cfailed chat§7: §e" + e.getMessage() + "\n");
                     msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
@@ -53,7 +51,7 @@ public class AsyncPlayerChat implements Listener {
 
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         if (p.hasPermission("group.moderator"))
-                            p.sendMessage(String.valueOf(msg));
+                            p.spigot().sendMessage(msg);
                     }
 
                     e.setCancelled(true);
@@ -91,67 +89,37 @@ public class AsyncPlayerChat implements Listener {
     }
 
     public void toDiscord(AsyncPlayerChatEvent e) {
-        /* 171 */
         String format = e.getFormat();
-        /* 172 */
         if (Saves.debug) {
-            /* 173 */
-            MFC.getInstance().getLogger().info("D Sender Name: " + e.getPlayer().getName() + ", Format: " + format + ", Message: " + e.getMessage());
-            /*     */
+            MFC.getInstance().getLogger().info("D Sender Name: " + e.getPlayer().getName()
+                    + ", Format: " + format + ", Message: " + e.getMessage());
         }
-        /* 175 */
         for (String prefix : Saves.bannedPrefixes) {
-            /* 176 */
             if (e.getMessage().startsWith(prefix)) {
-                /*     */
                 return;
-                /*     */
             }
-            /*     */
         }
-        /* 180 */
         for (String text : Saves.bannedWords) {
-            /* 181 */
             if (e.getMessage().contains(text)) {
-                /*     */
                 return;
-                /*     */
             }
-            /*     */
         }
-        /* 185 */
         for (String prefix : Saves.bannedFPrefixes) {
-            /* 186 */
             if (format.startsWith(prefix)) {
-                /*     */
                 return;
-                /*     */
             }
-            /*     */
         }
-        /* 190 */
         for (String text : Saves.bannedFWords) {
-            /* 191 */
             if (format.contains(text)) {
-                /*     */
                 return;
-                /*     */
             }
-            /*     */
         }
-        /* 195 */
         String name = Saves.useMinecraftNicknames ? e.getPlayer().getDisplayName() : e.getPlayer().getName();
-        /* 196 */
         String message = e.getMessage();
-        /* 197 */
         if (Saves.isBungeeCord) {
-            /* 198 */
             MFC.getInstance().getLogger().info("Sending it: " + e.getFormat());
-            /* 199 */
             MFC.getInstance().sendToBungeeCord(e.getPlayer(), "DiscordChat", name + "-:-" + message);
-            /*     */
         }
-        /*     */
     }
 
 }

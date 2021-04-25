@@ -13,6 +13,3 @@ commands:
       - mfcore
       - minefacore
       - minefaccore
-  vote:
-    aliases:
-      - votes

@@ -1,9 +1,6 @@
 package ac.minef.mfc.bungee;
 
-import ac.minef.mfc.bungee.commands.Duels;
-import ac.minef.mfc.bungee.commands.Hub;
-import ac.minef.mfc.bungee.commands.MFCB;
-import ac.minef.mfc.bungee.commands.Minefactions;
+import ac.minef.mfc.bungee.commands.*;
 import ac.minef.mfc.bungee.listeners.*;
 import com.google.common.io.ByteStreams;
 import com.tjplaysnow.discord.object.Bot;
@@ -70,6 +67,9 @@ public class MFC extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Minefactions());
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new MFCB(this));
+
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Discord());
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Vote());
 
         GetDefaultConfig();
         LoadConfig(config);

@@ -15,3 +15,8 @@ commands:
     aliases:
       - lobby
     description: Connect to hub server
+  Discord:
+  MFCB:
+  Vote:
+    aliases:
+      - votes
