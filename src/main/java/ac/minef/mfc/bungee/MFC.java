@@ -259,6 +259,7 @@ public class MFC extends Plugin {
             if (Saves.useBuilder) {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setTitle(toSend).setColor(Saves.color);
+                builder.setImage(avatarURL.replace("<uuid>", player.getUniqueId().toString()));
                 Objects.requireNonNull(bot.getBot().getTextChannelById(channelID)).sendMessage(builder.build()).complete();
             } else {
                 Objects.requireNonNull(bot.getBot().getTextChannelById(channelID)).sendMessage(toSend).queue();
@@ -266,12 +267,13 @@ public class MFC extends Plugin {
         }
     }
 
-    public void SendEventMessageToDiscord(String name, String structure, String color) {
+    public void SendEventMessageToDiscord(ProxiedPlayer player, String structure, String color) {
         if (isEnabled && isSetUp && textChannel != null) {
-            String toSend = structure.replaceAll("<name>", name);
+            String toSend = structure.replaceAll("<name>", player.getName());
             if (Saves.useBuilder) {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setTitle(toSend).setColor(Color.decode(color));
+                builder.setImage(avatarURL.replace("<uuid>", player.getUniqueId().toString()));
                 textChannel.sendMessage(builder.build()).complete();
             } else {
                 textChannel.sendMessage(toSend).queue();

@@ -42,7 +42,7 @@ public class Quit implements Listener {
                     MFC.getInstance().playerInfo.get(e.getPlayer().getName()) == null
                             || !MFC.getInstance().playerInfo.get(e.getPlayer().getName()) &&
                             Saves.discordLeftMessageEnabled) {
-                MFC.getInstance().SendEventMessageToDiscord(e.getPlayer().getName(), Saves.leaveDiscordStyle, "#db1616");
+                MFC.getInstance().SendEventMessageToDiscord(e.getPlayer(), Saves.leaveDiscordStyle, "#db1616");
                 /*     */
             }
             /*     */
