@@ -7,6 +7,7 @@ import ac.minef.mfc.bungee.commands.Minefactions;
 import ac.minef.mfc.bungee.listeners.*;
 import com.google.common.io.ByteStreams;
 import com.tjplaysnow.discord.object.Bot;
+import litebans.api.Database;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
@@ -25,6 +26,9 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.awt.*;
 import java.io.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -157,7 +161,7 @@ public class MFC extends Plugin {
                                 + ChatColor.GRAY + "commands";
                         p.sendMessage(new TextComponent(msg));
                     }
-                    /*if (bcMsg == 4) {
+                    if (bcMsg == 4) {
                         String msg = ChatColor.DARK_GRAY + "["
                                 + ChatColor.RED + ChatColor.BOLD
                                 + "Minef.ac" + ChatColor.DARK_GRAY + "] "
@@ -169,7 +173,7 @@ public class MFC extends Plugin {
                                 + ChatColor.GRAY + " total "
                                 + ChatColor.GRAY + "players!";
                         p.sendMessage(new TextComponent(msg));
-                    }*/
+                    }
                     if (bcMsg == 4) {
                         String msg = ChatColor.DARK_GRAY + "["
                                 + ChatColor.RED + ChatColor.BOLD
@@ -211,7 +215,7 @@ public class MFC extends Plugin {
                 (Objects.requireNonNull(LuckPermsProvider.get().getUserManager().getUser(p)).getPrimaryGroup())).getDisplayName();
     }
 
-    /*public long getBans() {
+    public long getBans() {
         String query = "SELECT COUNT(*) FROM {bans}";
         try (PreparedStatement st = Database.get().prepareStatement(query)) {
             try (ResultSet rs = st.executeQuery()) {
@@ -224,7 +228,7 @@ public class MFC extends Plugin {
         }
         return 0;
 
-     */
+    }
 
     public void SendMessageToDiscord(String message) {
         /* 400 */
