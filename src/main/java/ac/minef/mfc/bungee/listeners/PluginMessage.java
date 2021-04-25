@@ -4,6 +4,7 @@ import ac.minef.mfc.bungee.MFC;
 import ac.minef.mfc.bungee.Saves;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -75,7 +76,6 @@ public class PluginMessage implements Listener {
                         ProxyServer.getInstance().getScheduler().runAsync(MFC.getInstance(), () -> {
                             /* 591 */
                             if (!MFC.getInstance().playerInfo.containsKey(playerName)) {
-                                System.out.print(1);
                                 /* 592 */
                                 boolean isVanished = splitInput[1].equals("true");
                                 /* 593 */
@@ -86,10 +86,10 @@ public class PluginMessage implements Listener {
                                     /* 595 */
                                     MFC.getInstance().UpdatePlayerCount();
                                     /* 596 */
-                                    // ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerName);
+                                    ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerName);
                                     if (Saves.discordJoinedMessageEnabled) {
                                         /* 604 */
-                                        MFC.getInstance().SendEventMessageToDiscord(playerName, Saves.joinDiscordStyle);
+                                        MFC.getInstance().SendEventMessageToDiscord(player, Saves.joinDiscordStyle);
                                         /*     */
                                     }
                                     /*     */
@@ -104,6 +104,8 @@ public class PluginMessage implements Listener {
                     case "DiscordVanish": {
                         /* 611 */
                         String input = in.readUTF();
+                        final String[] splitInput = input.split("-:-");
+                        final String playerName = splitInput[0];
                         /* 612 */
                         if (MFC.getInstance().playerInfo.containsKey(input)) {
                             /* 613 */
@@ -113,12 +115,15 @@ public class PluginMessage implements Listener {
                         /* 615 */
                         MFC.getInstance().UpdatePlayerCount();
                         /* 616 */
-                        MFC.getInstance().SendEventMessageToDiscord(input, Saves.leaveDiscordStyle);
+                        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerName);
+                        MFC.getInstance().SendEventMessageToDiscord(player, Saves.leaveDiscordStyle);
                         break;
                     }
                     case "DiscordUnVanish": {
                         /* 622 */
                         String input = in.readUTF();
+                        final String[] splitInput = input.split("-:-");
+                        final String playerName = splitInput[0];
                         /* 623 */
                         if (MFC.getInstance().playerInfo.containsKey(input)) {
                             /* 624 */
@@ -128,7 +133,8 @@ public class PluginMessage implements Listener {
                         /* 626 */
                         MFC.getInstance().UpdatePlayerCount();
                         /* 627 */
-                        MFC.getInstance().SendEventMessageToDiscord(input, Saves.joinDiscordStyle);
+                        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerName);
+                        MFC.getInstance().SendEventMessageToDiscord(player, Saves.joinDiscordStyle);
                         break;
                     }
                 }
