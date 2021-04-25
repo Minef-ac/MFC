@@ -34,7 +34,7 @@ public class Quit implements Listener {
         /* 296 */
         if (Saves.onlyBungeecord) {
             /* 297 */
-            MFC.getInstance().SendEventMessageToDiscord(e.getPlayer().getName(), Saves.leaveDiscordStyle);
+            MFC.getInstance().SendEventMessageToDiscord(e.getPlayer(), Saves.leaveDiscordStyle);
             /*     */
         } else {
             /* 299 */

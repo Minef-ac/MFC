@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MFC extends Plugin {
+    private static final String avatarURL = "https://crafatar.com/avatars/<uuid>?overlay";
 
     private static MFC instance;
     public final String PREFIX = "!";
@@ -235,12 +236,13 @@ public class MFC extends Plugin {
         /*     */
     }
 
-    public void SendEventMessageToDiscord(String name, String structure) {
+    public void SendEventMessageToDiscord(ProxiedPlayer player, String structure) {
         if (isEnabled && isSetUp && textChannel != null) {
-            String toSend = structure.replaceAll("<name>", name);
+            String toSend = structure.replaceAll("<name>", player.getName());
             if (Saves.useBuilder) {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setTitle(toSend).setColor(Saves.color);
+                builder.setImage(avatarURL.replace("<uuid>", player.getUniqueId().toString()));
                 textChannel.sendMessage(builder.build()).complete();
             } else {
                 textChannel.sendMessage(toSend).queue();
@@ -251,9 +253,9 @@ public class MFC extends Plugin {
         if (textChannel == null) getLogger().severe("TEXT CHANNEL NOT SETUP");
     }
 
-    public void SendEventMessageToDiscord(String name, String structure, long channelID) {
+    public void SendEventMessageToDiscord(ProxiedPlayer player, String structure, long channelID) {
         if (isEnabled && isSetUp) {
-            String toSend = structure.replaceAll("<name>", name);
+            String toSend = structure.replaceAll("<name>", player.getName());
             if (Saves.useBuilder) {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setTitle(toSend).setColor(Saves.color);
