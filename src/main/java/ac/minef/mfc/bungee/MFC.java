@@ -39,11 +39,9 @@ public class MFC extends Plugin {
     private static MFC instance;
     // public final String PREFIX = "!";
     public Bot bot;
-    public TextChannel textChannel;
     public Map<String, Boolean> playerInfo = new HashMap<>();
     public boolean isEnabled = true;
     public boolean isSetUp = false;
-    Guild guild;
     // TextChannel commandChannel;
     // boolean isUsingVanishOnSpigot = false;
     Configuration config;
@@ -75,21 +73,47 @@ public class MFC extends Plugin {
 
         reloadConfig();
 
-        LoadConfig(config);
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle(":white_check_mark:  **Minef.ac network online**").setColor(Color.decode("#FFFF00"));
+        ProxyServer.getInstance().getScheduler().schedule(this, () -> {
+
+            getTextChannel().sendMessage(builder.build()).queue();
+        }, 1L, TimeUnit.SECONDS);
     }
 
     @Override
     public void onDisable() {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle(":octagonal_sign:  **Minef.ac network offline**").setColor(Color.decode("#FFFF00"));
-        textChannel.sendMessage(builder.build()).complete();
+        getTextChannel().sendMessage(builder.build()).complete();
+        bot.getBot().shutdownNow();
+    }
+
+    private Guild getGuild() {
+        Guild guild = bot.getBot().getGuildById(Saves.guildID);
+        if (guild != null) {
+            return guild;
+        }
+        getLogger().severe("Guild does not exist in the config! " + Saves.guildID);
+        return null;
+    }
+
+    private TextChannel getTextChannel() {
+        TextChannel tc = bot.getBot().getTextChannelById(Saves.textChannelID);
+        if (tc != null) {
+            return tc;
+        }
+        getLogger().severe("Text channel does not exist in the config! " + Saves.textChannelID);
+        return null;
     }
 
     public void reloadConfig() {
+        if (bot != null) {
+            bot.getBot().shutdownNow();
+        }
         GetDefaultConfig();
         LoadConfig(config);
         startBot();
-        UpdateStatus();
         UpdatePlayerCount();
         getLogger().info("Reloaded.");
     }
@@ -99,9 +123,9 @@ public class MFC extends Plugin {
         bot.addEvent(event -> {
             if (event instanceof MessageReceivedEvent) {
                 MessageReceivedEvent e = (MessageReceivedEvent) event;
-                if (textChannel != null && guild != null) {
+                if (getTextChannel() != null && getGuild() != null) {
                     if (e.getChannel().getIdLong() == Saves.textChannelID) {
-                        String nickname = Objects.requireNonNull(guild.getMember(e.getAuthor())).getNickname();
+                        String nickname = e.getMember().getNickname();
                         String name = (Saves.useDiscordNicknames && nickname != null && !nickname.isEmpty()) ? nickname : e.getAuthor().getName();
                         Role role = null;
                         for (Role r : Objects.requireNonNull(e.getMember()).getRoles()) {
@@ -116,7 +140,8 @@ public class MFC extends Plugin {
                 if (e.getNewStatus().name().equals("CONNECTED")) {
                     getLogger().info("READY!");
                     if (!isSetUp) {
-                        UpdateStatus();
+                        isEnabled = true;
+                        isSetUp = true;
                     }
                 }
             }
@@ -242,29 +267,29 @@ public class MFC extends Plugin {
 
     public void SendMessageToDiscord(String message) {
         /* 400 */
-        if (isEnabled && isSetUp && textChannel != null) {
+        if (isEnabled && isSetUp && getTextChannel() != null) {
             /* 401 */
-            textChannel.sendMessage(message).queue();
+            getTextChannel().sendMessage(message).queue();
             /*     */
         }
         /*     */
     }
 
     public void SendEventMessageToDiscord(ProxiedPlayer player, String structure) {
-        if (isEnabled && isSetUp && textChannel != null) {
+        if (isEnabled && isSetUp && getTextChannel() != null) {
             String toSend = structure.replaceAll("<name>", player.getName());
             if (Saves.useBuilder) {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setTitle(toSend).setColor(Saves.color);
                 builder.setImage(avatarURL.replace("<uuid>", player.getUniqueId().toString()));
-                textChannel.sendMessage(builder.build()).complete();
+                getTextChannel().sendMessage(builder.build()).queue();
             } else {
-                textChannel.sendMessage(toSend).queue();
+                getTextChannel().sendMessage(toSend).queue();
             }
         }
         if (!isEnabled) getLogger().severe("NOT ENABLED");
         if (!isSetUp) getLogger().severe("NOT SETUP");
-        if (textChannel == null) getLogger().severe("TEXT CHANNEL NOT SETUP");
+        if (getTextChannel() == null) getLogger().severe("TEXT CHANNEL NOT SETUP");
     }
 
     /*public void SendEventMessageToDiscord(ProxiedPlayer player, String structure, long channelID) {
@@ -282,20 +307,20 @@ public class MFC extends Plugin {
     }*/
 
     public void SendEventMessageToDiscord(ProxiedPlayer player, String structure, String color) {
-        if (isEnabled && isSetUp && textChannel != null) {
+        if (isEnabled && isSetUp && getTextChannel() != null) {
             String toSend = structure.replaceAll("<name>", player.getName());
             if (Saves.useBuilder) {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setTitle(toSend).setColor(Color.decode(color));
                 builder.setImage(avatarURL.replace("<uuid>", player.getUniqueId().toString()));
-                textChannel.sendMessage(builder.build()).complete();
+                getTextChannel().sendMessage(builder.build()).complete();
             } else {
-                textChannel.sendMessage(toSend).queue();
+                getTextChannel().sendMessage(toSend).queue();
             }
         }
         if (!isEnabled) getLogger().severe("NOT ENABLED");
         if (!isSetUp) getLogger().severe("NOT SETUP");
-        if (textChannel == null) getLogger().severe("TEXT CHANNEL NOT SETUP");
+        if (getTextChannel() == null) getLogger().severe("TEXT CHANNEL NOT SETUP");
     }
 
     public void UpdatePlayerCount() {
@@ -316,32 +341,9 @@ public class MFC extends Plugin {
         return getProxy().getPlayers().size();
     }
 
-    private void UpdateStatus() {
-        isEnabled = true;
-        isSetUp = false;
-        guild = bot.getBot().getGuildById(Saves.guildID);
-        if (guild != null) {
-            textChannel = guild.getTextChannelById(Saves.textChannelID);
-            if (textChannel == null) {
-                isEnabled = false;
-                getLogger().info("The text channel ID is not set up properly!");
-            }
-        } else {
-            isEnabled = false;
-            getLogger().info("The guild ID is not set up properly!");
-        }
-        if (isEnabled) {
-            getLogger().info("Everything set up correctly!");
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.setTitle(":white_check_mark:  **Minef.ac network online**").setColor(Color.decode("#FFFF00"));
-            textChannel.sendMessage(builder.build()).complete();
-        }
-        isSetUp = true;
-    }
-
     private void LoadConfig(Configuration conf) {
-        Saves.guildID = Long.valueOf("814671813032411156");
-        Saves.textChannelID = Long.valueOf("814671928249286676");
+        Saves.guildID = 814671813032411156L;
+        Saves.textChannelID = 814671928249286676L;
         Saves.showPlayersOnline = conf.getBoolean("show_players_online");
         Saves.inGameChatStyle = conf.getString("minecraft_chat");
         Saves.discordChatStyle = conf.getString("discord_chat");
