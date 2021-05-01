@@ -71,8 +71,30 @@ public class MFC extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Ping());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Vote());
 
+        bungeeBroadcast();
+
+        reloadConfig();
+
+        LoadConfig(config);
+    }
+
+    @Override
+    public void onDisable() {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle(":octagonal_sign:  **Minef.ac network offline**").setColor(Color.decode("#FFFF00"));
+        textChannel.sendMessage(builder.build()).complete();
+    }
+
+    public void reloadConfig() {
         GetDefaultConfig();
         LoadConfig(config);
+        startBot();
+        UpdateStatus();
+        UpdatePlayerCount();
+        getLogger().info("Reloaded.");
+    }
+
+    private void startBot() {
         bot = new Bot("ODE0NjcyMjYxODM0NDczNTMy.YDhQqw.YyltuP1kCiKhZBu42kqY_UuKOvU", "!");
         bot.addEvent(event -> {
             if (event instanceof MessageReceivedEvent) {
@@ -101,15 +123,6 @@ public class MFC extends Plugin {
             return false;
         });
         bot.setBotThread(new ThreadBungee(this));
-        UpdatePlayerCount();
-        bungeeBroadcast();
-    }
-
-    @Override
-    public void onDisable() {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle(":octagonal_sign:  **Minef.ac network offline**").setColor(Color.decode("#FFFF00"));
-        textChannel.sendMessage(builder.build()).complete();
     }
 
     private void bungeeBroadcast() {
@@ -324,14 +337,6 @@ public class MFC extends Plugin {
             textChannel.sendMessage(builder.build()).complete();
         }
         isSetUp = true;
-    }
-
-    public void reloadConfig() {
-        GetDefaultConfig();
-        LoadConfig(config);
-        UpdateStatus();
-        UpdatePlayerCount();
-        getLogger().info("Reloaded.");
     }
 
     private void LoadConfig(Configuration conf) {

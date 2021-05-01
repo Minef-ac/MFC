@@ -49,13 +49,13 @@ public class AsyncPlayerChat implements Listener {
                     msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
                             "/warn " + e.getPlayer().getName() + " Inappropriate Language -s"));
 
+                    e.setCancelled(true);
+                    e.getPlayer().sendMessage(ChatColor.RED + "Inappropriate language detected.");
+
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         if (p.hasPermission("group.moderator"))
                             p.spigot().sendMessage(msg);
                     }
-
-                    e.setCancelled(true);
-                    e.getPlayer().sendMessage(ChatColor.RED + "Inappropriate language detected.");
                 }
 
                 toDiscord(e);
@@ -117,7 +117,6 @@ public class AsyncPlayerChat implements Listener {
         String name = Saves.useMinecraftNicknames ? e.getPlayer().getDisplayName() : e.getPlayer().getName();
         String message = e.getMessage();
         if (Saves.isBungeeCord) {
-            MFC.getInstance().getLogger().info("Sending it: " + e.getFormat());
             MFC.getInstance().sendToBungeeCord(e.getPlayer(), "DiscordChat", name + "-:-" + message);
         }
     }
