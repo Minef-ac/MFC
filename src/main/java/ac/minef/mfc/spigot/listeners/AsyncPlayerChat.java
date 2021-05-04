@@ -57,9 +57,6 @@ public class AsyncPlayerChat implements Listener {
                             p.spigot().sendMessage(msg);
                     }
                 }
-
-                toDiscord(e);
-                tagCheck(e.getPlayer(), m);
                 new BukkitRunnable() {
                     @Override
                     public void run() {

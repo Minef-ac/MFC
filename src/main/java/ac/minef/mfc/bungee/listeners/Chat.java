@@ -14,6 +14,7 @@ public class Chat implements Listener {
     public void onChat(ChatEvent e) {
         if (Saves.onlyBungeecord && !e.isCommand()
                 && e.getSender() instanceof ProxiedPlayer) {
+            MFC.getInstance().getLogger().severe("BUNGEE CHAT CALL");
             ProxiedPlayer p = (ProxiedPlayer) e.getSender();
             String name = Saves.useMinecraftNicknames ? p.getDisplayName() : p.getName();
             String message = e.getMessage();
@@ -21,7 +22,7 @@ public class Chat implements Listener {
             String toSend = Saves.discordChatStyle.replaceAll("<message>", message);
             toSend = toSend.replaceAll("<name>", name);
             toSend = ChatColor.stripColor(toSend);
-            MFC.getInstance().SendMessageToDiscord(toSend);
+            // MFC.getInstance().SendMessageToDiscord(toSend);
         }
     }
 

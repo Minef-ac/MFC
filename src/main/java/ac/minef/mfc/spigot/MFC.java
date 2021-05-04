@@ -44,7 +44,6 @@ public class MFC extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDropItem(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
-        getServer().getPluginManager().registerEvents(new SparkyPunish(), this);
         getServer().getPluginManager().registerEvents(new CreatureSpawn(), this);
 
         getCommand("mfc").setExecutor(new MFCCommand());
