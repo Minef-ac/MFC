@@ -9,6 +9,7 @@ repositories {
     mavenCentral()
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://nexus.funkemunky.cc/content/repositories/releases/'}
     maven { url = 'https://jitpack.io'}
     maven { url = 'https://jcenter.bintray.com'}
 
@@ -17,6 +18,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
+    compileOnly 'ac.sparky:SparkyAPI:2.0.0'
     compileOnly 'net.md-5:bungeecord-api:1.8-SNAPSHOT'
     implementation 'com.github.TJPlaysNow:Discord-Bot-API---JDA:bb783a3816'
     compileOnly 'net.dv8tion:JDA:4.2.0_189'
