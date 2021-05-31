@@ -23,32 +23,30 @@ public class MFCCommand implements CommandExecutor {
                             if (args[2] != null) {
                                 if (args[2].equalsIgnoreCase("old")) {
                                     MFC.getInstance().executeCommand("bp give " + args[1]
-                                            + " 1 &a&oOld_Backpack"
+                                            + " 1 &r&a&oOld_Backpack"
                                             + "_&8[&c" + bp + "&8]");
-                                    sender.sendMessage(ChatColor.GREEN + "Given " + args[1] + " default backpack");
-                                    return false;
                                 }
                                 if (args[2].equalsIgnoreCase("used")) {
                                     MFC.getInstance().executeCommand("bp give " + args[1]
-                                            + " 2 &9&oUsed_Backpack"
+                                            + " 2 &r&9&oUsed_Backpack"
                                             + "_&8[&c" + bp + "&8]");
-                                    return false;
                                 }
                                 if (args[2].equalsIgnoreCase("new")) {
                                     MFC.getInstance().executeCommand("bp give " + args[1]
-                                            + " 4 &5&oNew_Backpack"
+                                            + " 4 &r&5&oNew_Backpack"
                                             + "_&8[&c" + bp + "&8]");
-                                    return false;
                                 }
                                 if (args[2].equalsIgnoreCase("miner")) {
                                     MFC.getInstance().executeCommand("bp give " + args[1]
-                                            + " 6 &6&oMiner_Backpack"
+                                            + " 6 &r&6&oMiner_Backpack"
                                             + "_&8[&c" + bp + "&8]");
-                                    return false;
                                 }
+                                sender.sendMessage(ChatColor.GREEN + args[1] + " received "
+                                        + args[2] + "backpack");
+                                return false;
                             }
                             MFC.getInstance().executeCommand("bp give " + args[1]
-                                    + " 1 &a&oOld_Backpack"
+                                    + " 1 &r&a&oOld_Backpack"
                                     + "_&8[&c" + bp + "&8]");
                             sender.sendMessage(ChatColor.GREEN + "Given " + args[1] + " default backpack");
                             return false;

@@ -2,6 +2,7 @@ package ac.minef.mfc.spigot;
 
 import ac.minef.mfc.spigot.commands.MFCCommand;
 import ac.minef.mfc.spigot.listeners.*;
+import litebans.api.Database;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
@@ -18,6 +19,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class MFC extends JavaPlugin {
@@ -144,6 +148,22 @@ public class MFC extends JavaPlugin {
             getLogger().severe("Failed to load config!");
             e.printStackTrace();
         }
+    }
+
+
+    public long getBans() {
+        String query = "SELECT COUNT(*) FROM {bans}";
+        try (PreparedStatement st = Database.get().prepareStatement(query)) {
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+
     }
 
     public void sendToBungeeCord(Player p, String channel, String sub) {

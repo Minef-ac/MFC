@@ -10,12 +10,12 @@ public class SparkyPunish implements Listener {
     @EventHandler
     public void onSparkyPunish(SparkyPunishEvent e) {
         e.setCancelled(true);
-        MFC.getInstance().getServer().broadcastMessage("\n&6✘ &cMinef.ac &ehas removed&c "
-                + e.getPlayer().getName() + "&e for cheating &6✘\n");
+        MFC.getInstance().getServer().broadcastMessage("\n§6✘ §cMinef.ac §ehas removed§c "
+                + e.getPlayer().getName() + "§e for cheating §6✘\n");
         if (!e.getPlayer().hasPermission("group.administrator")) {
             MFC.getInstance().executeCommand("ipban -s " + e.getPlayer().getName()
                     + " 30d Blacklisted Modifications\n[" + e.getCheckName() + ","
-                    + e.getCheckType() + "," + e.getCategory() + "," + e.getViolation() + "VL]");
+                    + e.getCheckType().charAt(0) + e.getCategory().charAt(0) + "#" + MFC.getInstance().getBans() + "]");
         }
     }
 
