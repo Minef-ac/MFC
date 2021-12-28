@@ -3,6 +3,7 @@ package ac.minef.mfc.spigot.commands;
 import ac.minef.mfc.spigot.MFC;
 import ac.minef.mfc.spigot.Saves;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -59,6 +60,24 @@ public class MFCCommand implements CommandExecutor {
                             p.sendMessage(ChatColor.GREEN + "Given self default backpack");
                             return false;
                         }
+                    }
+                    if (args[0].equalsIgnoreCase("sound")) {
+                        if (args.length > 1 && MFC.getInstance().getServer().getPlayer(args[1]) != null) {
+                            if (args.length > 2) {
+                                Player p = MFC.getInstance().getServer().getPlayer(args[1]);
+                                p.playSound(p.getLocation(), args[2], 1, 1);
+                                return false;
+                            }
+                            if (sender instanceof Player) {
+                                Player p = (Player) sender;
+                                p.playSound(p.getLocation(), Sound.NOTE_PLING, 1, 1);
+                                return false;
+                            }
+                            sender.sendMessage(ChatColor.RED + "You must be a player for this!");
+                            return false;
+                        }
+                        sender.sendMessage(ChatColor.RED + "Usage: sound <player> [sound]");
+                        return false;
                     }
                     if (args[0].equalsIgnoreCase("reload")) {
                         MFC.getInstance().Reload();
