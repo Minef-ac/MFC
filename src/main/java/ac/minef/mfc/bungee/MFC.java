@@ -77,7 +77,7 @@ public class MFC extends Plugin {
         builder.setTitle(":white_check_mark:  **Minef.ac network online**").setColor(Color.decode("#FFFF00"));
         ProxyServer.getInstance().getScheduler().schedule(this, () -> {
 
-            getTextChannel().sendMessage(builder.build()).queue();
+            getTextChannel().sendMessageEmbeds(builder.build()).queue();
         }, 1L, TimeUnit.SECONDS);
     }
 
@@ -85,7 +85,7 @@ public class MFC extends Plugin {
     public void onDisable() {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle(":octagonal_sign:  **Minef.ac network offline**").setColor(Color.decode("#FFFF00"));
-        getTextChannel().sendMessage(builder.build()).complete();
+        getTextChannel().sendMessageEmbeds(builder.build()).queue();
         bot.getBot().shutdownNow();
     }
 
@@ -279,10 +279,11 @@ public class MFC extends Plugin {
         if (isEnabled && isSetUp && getTextChannel() != null) {
             String toSend = structure.replaceAll("<name>", player.getName());
             if (Saves.useBuilder) {
-                EmbedBuilder builder = new EmbedBuilder();
-                builder.setTitle(toSend).setColor(Saves.color);
-                builder.setImage(avatarURL.replace("<uuid>", player.getUniqueId().toString()));
-                getTextChannel().sendMessage(builder.build()).queue();
+                // EmbedBuilder builder = new EmbedBuilder();
+                // builder.setTitle(toSend).setColor(Saves.color);
+                // builder.setImage(avatarURL.replace("<uuid>", player.getUniqueId().toString()));
+                // getTextChannel().sendMessage(builder.build()).queue();
+                getTextChannel().sendMessage(":octagonal_sign:  **Minef.ac network offline**");
             } else {
                 getTextChannel().sendMessage(toSend).queue();
             }
@@ -299,7 +300,7 @@ public class MFC extends Plugin {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setTitle(toSend).setColor(Saves.color);
                 builder.setImage(avatarURL.replace("<uuid>", player.getUniqueId().toString()));
-                Objects.requireNonNull(bot.getBot().getTextChannelById(channelID)).sendMessage(builder.build()).complete();
+                Objects.requireNonNull(bot.getBot().getTextChannelById(channelID)).sendMessage(builder.build()).queue();
             } else {
                 Objects.requireNonNull(bot.getBot().getTextChannelById(channelID)).sendMessage(toSend).queue();
             }
@@ -313,7 +314,7 @@ public class MFC extends Plugin {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setTitle(toSend).setColor(Color.decode(color));
                 builder.setImage(avatarURL.replace("<uuid>", player.getUniqueId().toString()));
-                getTextChannel().sendMessage(builder.build()).complete();
+                getTextChannel().sendMessageEmbeds(builder.build()).queue();
             } else {
                 getTextChannel().sendMessage(toSend).queue();
             }
