@@ -16,13 +16,6 @@ public class PlayerCommand implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        if (e.getMessage().equalsIgnoreCase("/help")
-                || e.getMessage().equalsIgnoreCase("/?")) {
-            e.setCancelled(true);
-            MFC.getInstance().getServer().dispatchCommand
-                    (MFC.getInstance().getServer().getConsoleSender(),
-                            "dm open menu " + e.getPlayer().getName());
-        }
         String m = e.getMessage().toLowerCase();
         if (!e.getPlayer().hasPermission("group.moderator")) {
             if (m.contains("nigg") || m.contains("niqq")
