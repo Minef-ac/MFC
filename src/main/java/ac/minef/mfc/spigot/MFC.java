@@ -42,14 +42,8 @@ public class MFC extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Armor(), this);
         getServer().getPluginManager().registerEvents(new AsyncPlayerChat(), this);
         getServer().getPluginManager().registerEvents(new Connections(), this);
-        getServer().getPluginManager().registerEvents(new EntityDeath(), this);
         getServer().getPluginManager().registerEvents(new PlayerCommand(), this);
-        getServer().getPluginManager().registerEvents(new InventoryClick(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDropItem(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
-        getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new SparkyPunish(), this);
-        getServer().getPluginManager().registerEvents(new CreatureSpawn(), this);
 
         getCommand("mfc").setExecutor(new MFCCommand());
 
@@ -59,16 +53,6 @@ public class MFC extends JavaPlugin {
         }
 
         Reload();
-
-        this.isEnabled = false;
-        /*  60 */
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        /*     */
-        /*  62 */
-        getLogger().info("MFC BungeeCord mode activated!");
-        getLogger().info("MFC enabled!");
-
-        // SendEventMessageToDiscord(getServer().getServerName(), Saves.serverStartStyle, "#15ea0e");
     }
 
     @Override
@@ -80,8 +64,6 @@ public class MFC extends JavaPlugin {
             getLogger().severe("Config failed to save!");
             e.printStackTrace();
         }
-        getLogger().info("MFC disabled!");
-        // SendEventMessageToDiscord(getServer().getServerName(), Saves.serverStopStyle, "#ee1212");
     }
 
     public String getRank(String p) {
@@ -101,36 +83,11 @@ public class MFC extends JavaPlugin {
     public void Reload() {
         loadFile();
         loadConfig(config);
-        // UpdateStatus();
         getLogger().info("Reloaded.");
     }
 
     public void loadConfig(Configuration conf) {
-        Saves.guildID = conf.getLong("guild_id");
-        Saves.backpacks = conf.getLong("backpacks");
-        Saves.textChannelID = conf.getLong("discord_channel_id");
-        Saves.showPlayersOnline = conf.getBoolean("show_players_online");
-        Saves.inGameChatStyle = conf.getString("minecraft_chat");
-        Saves.serverStartStyle = conf.getString("server_start");
-        Saves.serverStopStyle = conf.getString("server_stop");
-        Saves.discordChatStyle = conf.getString("discord_chat");
-        Saves.discordJoinedMessageEnabled = conf.getBoolean("discord_joined_message_enabled");
-        Saves.discordLeftMessageEnabled = conf.getBoolean("discord_left_message_enabled");
-        Saves.useDiscordNicknames = conf.getBoolean("use_discord_nicknames");
-        Saves.joinDiscordStyle = conf.getString("discord_joined_message");
-        Saves.leaveDiscordStyle = conf.getString("discord_left_message");
-        Saves.canUseColorCodes = conf.getBoolean("colorcodes_enabled");
-        Saves.useBuilder = conf.getBoolean("use_fancy_border");
-        Saves.color = Color.decode("#" + this.config.getString("builder_color"));
-        Saves.botPlayingText = conf.getString("bot_playing_text");
-        Saves.useMinecraftNicknames = conf.getBoolean("use_minecraft_nicknames");
-        Saves.bannedPrefixes = conf.getStringList("list_of_banned_prefixes");
-        Saves.bannedWords = conf.getStringList("list_of_banned_words");
-        Saves.isBungeeCord = conf.getBoolean("bungeecord");
-        Saves.bungeeDeathMessageEnabled = conf.getBoolean("bungee_death_message_enabled");
-        Saves.bannedFWords = conf.getStringList("list_of_banned_format_words");
-        Saves.bannedFPrefixes = conf.getStringList("list_of_banned_format_prefixes");
-        Saves.debug = conf.getBoolean("debug_mode");
+        Saves.pluginVersion = getDescription().getVersion();
     }
 
     public void loadFile() {
@@ -164,27 +121,5 @@ public class MFC extends JavaPlugin {
         }
         return 0;
 
-    }
-
-    public void sendToBungeeCord(Player p, String channel, String sub) {
-        /* 211 */
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        /* 212 */
-        DataOutputStream out = new DataOutputStream(b);
-        /*     */
-        try {
-            /* 214 */
-            out.writeUTF(channel);
-            /* 215 */
-            out.writeUTF(sub);
-            /* 216 */
-        } catch (IOException e) {
-            /* 217 */
-            e.printStackTrace();
-            /*     */
-        }
-        /* 219 */
-        p.sendPluginMessage(this, "BungeeCord", b.toByteArray());
-        /*     */
     }
 }

@@ -13,29 +13,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class Connections implements Listener {
 
-    ItemStack hubItem;
-    ItemStack menuItem;
-
-    public Connections() {
-        hubItem = new ItemStack(Material.COMPASS);
-        ItemMeta hubMeta = hubItem.getItemMeta();
-        hubMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.ITALIC + "Server Selector");
-        hubItem.setItemMeta(hubMeta);
-
-        menuItem = new ItemStack(Material.REDSTONE_COMPARATOR);
-        ItemMeta menuMeta = menuItem.getItemMeta();
-        menuMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.ITALIC + "Server Menu");
-        menuItem.setItemMeta(menuMeta);
-    }
-
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
-        if (MFC.getInstance().getServer().getServerName().equalsIgnoreCase("hub")) {
-            e.getPlayer().getInventory().clear();
-            e.getPlayer().getInventory().setItem(0, hubItem);
-            e.getPlayer().getInventory().setItem(8, menuItem);
+        if (!e.getPlayer().hasPlayedBefore()) {
+            MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " A");
         }
     }
 

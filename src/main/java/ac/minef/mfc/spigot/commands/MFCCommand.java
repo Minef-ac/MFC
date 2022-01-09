@@ -16,51 +16,6 @@ public class MFCCommand implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("mfc")) {
             if (sender.hasPermission("group.administrator")) {
                 if (args.length > 0) {
-                    if (args[0].equalsIgnoreCase("bp")) {
-                        Saves.backpacks = Saves.backpacks + 1;
-                        MFC.getInstance().getConfig().set("backpacks", Saves.backpacks);
-                        long bp = Saves.backpacks;
-                        if (args.length > 1 && MFC.getInstance().getServer().getPlayer(args[1]) != null) {
-                            if (args[2] != null) {
-                                if (args[2].equalsIgnoreCase("old")) {
-                                    MFC.getInstance().executeCommand("bp give " + args[1]
-                                            + " 1 &r&a&oOld_Backpack"
-                                            + "_&8[&c" + bp + "&8]");
-                                }
-                                if (args[2].equalsIgnoreCase("used")) {
-                                    MFC.getInstance().executeCommand("bp give " + args[1]
-                                            + " 2 &r&9&oUsed_Backpack"
-                                            + "_&8[&c" + bp + "&8]");
-                                }
-                                if (args[2].equalsIgnoreCase("new")) {
-                                    MFC.getInstance().executeCommand("bp give " + args[1]
-                                            + " 4 &r&5&oNew_Backpack"
-                                            + "_&8[&c" + bp + "&8]");
-                                }
-                                if (args[2].equalsIgnoreCase("miner")) {
-                                    MFC.getInstance().executeCommand("bp give " + args[1]
-                                            + " 6 &r&6&oMiner_Backpack"
-                                            + "_&8[&c" + bp + "&8]");
-                                }
-                                sender.sendMessage(ChatColor.GREEN + args[1] + " received "
-                                        + args[2] + "backpack");
-                                return false;
-                            }
-                            MFC.getInstance().executeCommand("bp give " + args[1]
-                                    + " 1 &r&a&oOld_Backpack"
-                                    + "_&8[&c" + bp + "&8]");
-                            sender.sendMessage(ChatColor.GREEN + "Given " + args[1] + " default backpack");
-                            return false;
-                        }
-                        if (sender instanceof Player) {
-                            Player p = (Player) sender;
-                            MFC.getInstance().executeCommand("bp give " + p.getName()
-                                    + " 1 &a&oOld_Backpack"
-                                    + "_&8[&c" + bp + "&8]");
-                            p.sendMessage(ChatColor.GREEN + "Given self default backpack");
-                            return false;
-                        }
-                    }
                     if (args[0].equalsIgnoreCase("sound")) {
                         if (args.length > 1 && MFC.getInstance().getServer().getPlayer(args[1]) != null) {
                             if (args.length > 2) {
@@ -79,14 +34,28 @@ public class MFCCommand implements CommandExecutor {
                         sender.sendMessage(ChatColor.RED + "Usage: sound <player> [sound]");
                         return false;
                     }
+                    if (args[0].equalsIgnoreCase("reward")) {
+                        if (args.length > 1 && MFC.getInstance().getServer().getPlayer(args[1]) != null) {
+                            if (args.length > 2) {
+                                String rwcmd = args[2].replace("_", " ");
+                                Player p = MFC.getInstance().getServer().getPlayer(args[1]);
+                                p.playSound(p.getLocation(), Sound.LEVEL_UP, 1, 1);
+                                MFC.getInstance().executeCommand(rwcmd);
+                                p.sendMessage("" + ChatColor.DARK_PURPLE + ChatColor.BOLD + "Mines " +
+                                        ChatColor.DARK_GRAY + "» " + ChatColor.LIGHT_PURPLE + "You earned some Mine Loot!");
+                                return false;
+                            }
+                        }
+                        sender.sendMessage(ChatColor.RED + "Usage: reward <player> <cmd>");
+                        return false;
+                    }
                     if (args[0].equalsIgnoreCase("reload")) {
                         MFC.getInstance().Reload();
                         sender.sendMessage(ChatColor.GREEN + "MFC configuration reloaded.");
                         return false;
                     }
                 }
-                sender.sendMessage(ChatColor.RED + "Usage:\n/mfc bp [player] [old/used/new/miner]\n/mfc reload");
-                // miner npc has quest to give miner backpack ?
+                sender.sendMessage(ChatColor.RED + "Usage:\n/mfc sound <player> [sound]\n/mfc reload\n/mfc reward <player> <cmd>");
                 return false;
             }
             sender.sendMessage(ChatColor.RED + "No permission.");

@@ -56,6 +56,13 @@ public class AsyncPlayerChat implements Listener {
                         if (p.hasPermission("group.moderator"))
                             p.spigot().sendMessage(msg);
                     }
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            chatTimer.remove(e.getPlayer());
+                        }
+                    }.runTaskLater(MFC.getInstance(), 50);
+                    return;
                 }
                 new BukkitRunnable() {
                     @Override
@@ -64,7 +71,6 @@ public class AsyncPlayerChat implements Listener {
                     }
                 }.runTaskLater(MFC.getInstance(), 50);
             }
-            toDiscord(e);
             tagCheck(e.getPlayer(), m);
             return;
         }
@@ -82,39 +88,6 @@ public class AsyncPlayerChat implements Listener {
                     sender.playSound(p.getLocation(), Sound.CLICK, 2, 2);
                 }
             }
-        }
-    }
-
-    public void toDiscord(AsyncPlayerChatEvent e) {
-        String format = e.getFormat();
-        if (Saves.debug) {
-            MFC.getInstance().getLogger().info("D Sender Name: " + e.getPlayer().getName()
-                    + ", Format: " + format + ", Message: " + e.getMessage());
-        }
-        for (String prefix : Saves.bannedPrefixes) {
-            if (e.getMessage().startsWith(prefix)) {
-                return;
-            }
-        }
-        for (String text : Saves.bannedWords) {
-            if (e.getMessage().contains(text)) {
-                return;
-            }
-        }
-        for (String prefix : Saves.bannedFPrefixes) {
-            if (format.startsWith(prefix)) {
-                return;
-            }
-        }
-        for (String text : Saves.bannedFWords) {
-            if (format.contains(text)) {
-                return;
-            }
-        }
-        String name = Saves.useMinecraftNicknames ? e.getPlayer().getDisplayName() : e.getPlayer().getName();
-        String message = e.getMessage();
-        if (Saves.isBungeeCord) {
-            MFC.getInstance().sendToBungeeCord(e.getPlayer(), "DiscordChat", name + "-:-" + message);
         }
     }
 
