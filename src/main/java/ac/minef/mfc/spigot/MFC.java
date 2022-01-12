@@ -4,6 +4,9 @@ import ac.minef.mfc.spigot.commands.MFCCommand;
 import ac.minef.mfc.spigot.listeners.*;
 import litebans.api.Database;
 import net.luckperms.api.LuckPerms;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -23,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class MFC extends JavaPlugin {
 
@@ -53,6 +57,17 @@ public class MFC extends JavaPlugin {
         }
 
         Reload();
+
+        getServer().getScheduler().runTaskTimerAsynchronously(getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                if (getServer().getOnlinePlayers().size() != 0) {
+                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Vote 4");
+                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Rare 2");
+                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Epic 1");
+                }
+            }
+        },20, 20 * 60 * 100);
     }
 
     @Override

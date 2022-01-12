@@ -17,7 +17,12 @@ public class Connections implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
         if (!e.getPlayer().hasPlayedBefore()) {
-            MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " A");
+            if (e.getPlayer().hasPermission("deluxetags.tag.Premium"))
+            {
+                MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " Premium");
+            } else {
+                MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " A");
+            }
         }
     }
 
