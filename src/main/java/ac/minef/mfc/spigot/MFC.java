@@ -58,7 +58,7 @@ public class MFC extends JavaPlugin {
 
         Reload();
 
-        getServer().getScheduler().runTaskTimerAsynchronously(getInstance(), new Runnable() {
+        getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
             @Override
             public void run() {
                 if (getServer().getOnlinePlayers().size() != 0) {
