@@ -62,12 +62,11 @@ public class MFC extends JavaPlugin {
             @Override
             public void run() {
                 if (getServer().getOnlinePlayers().size() != 0) {
-                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Vote 4");
-                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Rare 2");
-                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Epic 1");
+                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Vote 2");
+                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Rare 1");
                 }
             }
-        },20, 20 * 60 * 100);
+        },20, 20 * 60 * 135);
     }
 
     @Override
