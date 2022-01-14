@@ -13,6 +13,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -50,6 +51,7 @@ public class MFC extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerCommand(), this);
         getServer().getPluginManager().registerEvents(new SparkyPunish(), this);
         getServer().getPluginManager().registerEvents(new Inventory(this), (Plugin) this);
+        getServer().getPluginManager().registerEvents(new FoodLevelChange(this), this);
 
         getCommand("mfc").setExecutor(new MFCCommand());
 
