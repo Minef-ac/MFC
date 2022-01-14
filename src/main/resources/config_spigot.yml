@@ -1,1 +1,27 @@
 pluginVersion: 1.0-SNAPSHOT
+
+# MAX ENCHANTMENTS
+Thorns: 10
+Efficiency: 10
+Fortune: 10
+Sharpness: 10
+Protection: 10
+Unbreaking: 10
+Aqua Affinity: 10
+Bane of Arthropods: 10
+Depth Strider: 10
+Feather Falling: 10
+Fire Aspect: 10
+Fire Protection: 10
+Flame: 10
+Frost Walker: 10
+Knockback: 10
+Looting: 10
+Luck of the Sea: 10
+Lure: 10
+Power: 10
+Projectile Protection: 10
+Punch: 10
+Respiration: 10
+Silk Touch: 10
+Smite: 10

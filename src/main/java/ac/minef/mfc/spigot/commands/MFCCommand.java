@@ -37,7 +37,7 @@ public class MFCCommand implements CommandExecutor {
                     if (args[0].equalsIgnoreCase("reward")) {
                         if (args.length > 1 && MFC.getInstance().getServer().getPlayer(args[1]) != null) {
                             if (args.length > 2) {
-                                String rwcmd = args[2].replace("_", " ");
+                                String rwcmd = args[2].replace("|", " ");
                                 Player p = MFC.getInstance().getServer().getPlayer(args[1]);
                                 p.playSound(p.getLocation(), Sound.LEVEL_UP, 1, 1);
                                 MFC.getInstance().executeCommand(rwcmd);
