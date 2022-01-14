@@ -63,14 +63,18 @@ public class MFC extends JavaPlugin {
         Reload();
 
         getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
-            @Override
             public void run() {
-                if (getServer().getOnlinePlayers().size() != 0) {
-                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Vote 2");
-                    getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Rare 1");
-                }
+                executeCommand("bc &a&lKey-all Event&f will begin in &65 minutes");
+                getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
+                    public void run() {
+                        if (getServer().getOnlinePlayers().size() != 0) {
+                            getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Vote 2");
+                            getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Rare 1");
+                        }
+                    }
+                },20 * 60 * 135, 20 * 60 * 5);
             }
-        },20 * 60 * 135, 20 * 60 * 135);
+        },20 * 60 * 135, 20 * 60 * 130);
     }
 
     @Override
