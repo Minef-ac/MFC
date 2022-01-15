@@ -4,31 +4,24 @@ import ac.minef.mfc.spigot.commands.MFCCommand;
 import ac.minef.mfc.spigot.listeners.*;
 import litebans.api.Database;
 import net.luckperms.api.LuckPerms;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.awt.*;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class MFC extends JavaPlugin {
 
@@ -52,6 +45,7 @@ public class MFC extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SparkyPunish(), this);
         getServer().getPluginManager().registerEvents(new Inventory(this), (Plugin) this);
         getServer().getPluginManager().registerEvents(new FoodLevelChange(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
 
         getCommand("mfc").setExecutor(new MFCCommand());
 
@@ -65,16 +59,25 @@ public class MFC extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
             public void run() {
                 executeCommand("bc &a&lKey-all Event&f will begin in &65 minutes");
-                getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
+                getServer().getScheduler().runTaskLater(getInstance(), new Runnable() {
                     public void run() {
                         if (getServer().getOnlinePlayers().size() != 0) {
                             getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Vote 2");
                             getServer().dispatchCommand(getServer().getConsoleSender(), "cc giveall physical Rare 1");
                         }
                     }
-                },20 * 60 * 135, 20 * 60 * 5);
+                }, 20 * 60 * 5);
             }
-        },20 * 60 * 135, 20 * 60 * 130);
+        },20 * 60 * 130, 20 * 60 * 130);
+
+
+        getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
+            public void run() {
+                for (Player p : MFC.getInstance().getServer().getOnlinePlayers()) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
+                }
+            }
+        },20 * 2, 20 * 2);
     }
 
     @Override
