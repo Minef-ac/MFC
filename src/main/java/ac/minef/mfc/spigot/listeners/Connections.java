@@ -18,19 +18,16 @@ public class Connections implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e) {
         for (Player p: MFC.getInstance().getServer().getOnlinePlayers()) {
-            MFC.getInstance().executeCommand("mfc sound " + p.getDisplayName() + " NOTE.PLING");
+            MFC.getInstance().executeCommand("mfc sound " + p.getDisplayName() + " fireworks.twinkle_far");
         }
         if (e.getPlayer().hasPermission("deluxetags.tag.Owner")) {
             MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " Owner");
-            return;
         }
-        if (e.getPlayer().hasPermission("deluxetags.tag.Administrator")) {
+        else if (e.getPlayer().hasPermission("deluxetags.tag.Administrator")) {
             MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " Administrator");
-            return;
         }
-        if (e.getPlayer().hasPermission("deluxetags.tag.Moderator")) {
+        else if (e.getPlayer().hasPermission("deluxetags.tag.Moderator")) {
             MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " Moderator");
-            return;
         }
         if (!e.getPlayer().hasPlayedBefore()) {
             if (e.getPlayer().hasPermission("deluxetags.tag.Premium"))
