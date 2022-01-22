@@ -14,7 +14,7 @@ public class ServerSwitch implements Listener {
     @EventHandler
     /*     */ public void onChangeServer(final ServerSwitchEvent e) {
 
-        if (e.getPlayer().getServer() != null) {
+       /* if (e.getPlayer().getServer() != null) {
             ProxiedPlayer target = e.getPlayer();
             ServerInfo server = target.getServer().getInfo();
 
@@ -29,7 +29,7 @@ public class ServerSwitch implements Listener {
                     p.sendMessage(new TextComponent(join));
                 }
             }
-        }
+        }*/
     }
 
 }

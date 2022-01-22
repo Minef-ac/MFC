@@ -10,6 +10,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -71,13 +72,20 @@ public class MFC extends JavaPlugin {
         },20 * 60 * 130, 20 * 60 * 130);
 
 
-        getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
+        /*getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
             public void run() {
                 for (Player p : MFC.getInstance().getServer().getOnlinePlayers()) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
+                    if (!p.getWorld().getName().equalsIgnoreCase("world")) return;
+                    if (p.getLocation().getBlockX() < 160 &&
+                            p.getLocation().getBlockZ() < 160) {
+                        if (p.getLocation().getBlockX() > -160 && p.getLocation().getBlockZ() > -160) {
+                            p.getActivePotionEffects().clear();
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1));
+                        }
+                    }
                 }
             }
-        },20 * 2, 20 * 2);
+        },40, 40);*/
     }
 
     @Override

@@ -37,8 +37,6 @@ public class MFC extends Plugin {
     public void onEnable() {
         instance = this;
 
-        ProxyServer.getInstance().getPluginManager().registerListener(this, new Quit());
-        ProxyServer.getInstance().getPluginManager().registerListener(this, new ServerSwitch());
         // ProxyServer.getInstance().getPluginManager().registerListener(this, new TabComplete());
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new MFCB(this));

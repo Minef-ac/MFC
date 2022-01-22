@@ -13,7 +13,7 @@ public class Quit implements Listener {
 
     @EventHandler
     public void onQuit(PlayerDisconnectEvent e) {
-        if (e.getPlayer().getServer() != null) {
+        /*if (e.getPlayer().getServer() != null) {
             ServerInfo server = e.getPlayer().getServer().getInfo();
             ProxiedPlayer target = e.getPlayer();
             String leave = ChatColor.DARK_GRAY + "[" +
@@ -26,6 +26,6 @@ public class Quit implements Listener {
                     p.sendMessage(new TextComponent(leave));
                 }
             }
-        }
+        }*/
     }
 }

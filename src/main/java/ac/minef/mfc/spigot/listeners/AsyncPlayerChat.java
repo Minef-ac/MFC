@@ -83,8 +83,8 @@ public class AsyncPlayerChat implements Listener {
             if (!p.equals(sender)) {
                 if (m.contains(p.getName().toLowerCase())) {
                     p.playSound(p.getLocation(), Sound.LEVEL_UP, 2, 2);
-                    p.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC
-                            + sender.getName() + " tagged you");
+                    // make this an action bar   p.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC
+                    //        + sender.getName() + " tagged you");
                     sender.playSound(p.getLocation(), Sound.CLICK, 2, 2);
                 }
             }
