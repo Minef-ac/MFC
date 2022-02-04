@@ -4,7 +4,12 @@ import ac.minef.mfc.spigot.commands.MFCCommand;
 import ac.minef.mfc.spigot.listeners.*;
 import litebans.api.Database;
 import net.luckperms.api.LuckPerms;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -59,7 +64,7 @@ public class MFC extends JavaPlugin {
 
         getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
             public void run() {
-                executeCommand("bc &a&lKey-all Event&f will begin in &65 minutes");
+                executeCommand("\nbc &a&lKey-all Event&f will begin in &65 minutes\n");
                 getServer().getScheduler().runTaskLater(getInstance(), new Runnable() {
                     public void run() {
                         if (getServer().getOnlinePlayers().size() != 0) {
@@ -153,6 +158,40 @@ public class MFC extends JavaPlugin {
             e.printStackTrace();
         }
         return 0;
-
     }
+
+    public boolean isProfanity(Player p, String m) {
+        if (!p.hasPermission("group.moderator")) {
+            if (m.contains("nigg") || m.contains("niqq")
+                    || m.contains("n1g") || m.contains("n3gro")
+                    || m.contains("negro") || m.contains("kys")
+                    || m.contains("fag") || m.contains("phag")
+                    || m.contains("queer")
+                    || m.contains("blackie") || m.equalsIgnoreCase("nig")
+                    || m.contains("blacky") || m.contains("marlowe")
+                    || m.contains("dick") || m.contains("cock")
+                    || m.contains("nigger") || m.contains("aggo")
+                    || m.contains("tits") || m.contains("puss")
+                    || m.contains("0ck") || m.contains("aqg")
+                    || m.contains("sex")) {
+
+                TextComponent msg = new TextComponent("\n        §8[§c!§8]§e "
+                        + p.getName() + " §cfailed cmd§7: §e" + m + "\n");
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        new ComponentBuilder("§8[§eClick to warn§8]").create()));
+                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                        "/warn " + p.getName() + " Inappropriate Language -s"));
+
+                for (Player pnew : getServer().getOnlinePlayers()) {
+                    if (pnew.hasPermission("group.moderator"))
+                        pnew.sendMessage(String.valueOf(msg));
+                }
+                p.sendMessage(ChatColor.RED + "Inappropriate language detected.");
+
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

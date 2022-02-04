@@ -39,7 +39,7 @@ public class MFCCommand implements CommandExecutor {
                             if (args.length > 2) {
                                 String rwcmd = args[2].replace("|", " ");
                                 Player p = MFC.getInstance().getServer().getPlayer(args[1]);
-                                p.playSound(p.getLocation(), Sound.LEVEL_UP, 1, 1);
+                                p.playSound(p.getLocation(), Sound.VILLAGER_YES, 1, 1);
                                 MFC.getInstance().executeCommand(rwcmd);
                                 p.sendMessage("" + ChatColor.DARK_PURPLE + ChatColor.BOLD + "Mines " +
                                         ChatColor.DARK_GRAY + "» " + ChatColor.LIGHT_PURPLE + "You earned some Mine Loot!");

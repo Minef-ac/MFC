@@ -35,7 +35,7 @@ public class AsyncPlayerChat implements Listener {
                         || m.contains("fck") || m.contains("retard")
                         || m.contains("cunt") || m.contains("penis")
                         || m.contains("peenis") || m.contains("pen15")
-                        || m.contains("fag") || m.contains("phag")
+                        || m.contains("fag") || m.contains("phag") || m.contains("gge")
                         || m.contains("queer") || m.contains("blackie")
                         || m.contains("blacky") || m.contains("marlowe")
                         || m.contains("dick") || m.contains("cock")
