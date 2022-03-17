@@ -11,16 +11,13 @@ repositories {
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://nexus.funkemunky.cc/content/repositories/releases/'}
     maven { url = 'https://jitpack.io'}
-    maven { url = 'https://jcenter.bintray.com'}
-
-
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'ac.sparky:SparkyAPI:2.0.0'
     compileOnly 'net.md-5:bungeecord-api:1.8-SNAPSHOT'
-    compileOnly 'net.luckperms:api:5.3'
+    compileOnly 'net.luckperms:api:5.4'
 
     compileOnly fileTree(dir: 'libs', include: '*.jar')
 }

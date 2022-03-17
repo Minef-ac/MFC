@@ -19,7 +19,7 @@ public class PlayerCommand implements Listener {
         if (MFC.getInstance().isProfanity(e.getPlayer(), e.getMessage().toLowerCase())) {
             e.setCancelled(true);
         }
-        if (e.getMessage().toLowerCase().contains("f wild")) {
+        if (e.getMessage().equalsIgnoreCase("/f wild")) {
             e.setCancelled(true);
             e.getPlayer().performCommand("rtp");
         }

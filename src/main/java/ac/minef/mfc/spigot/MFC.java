@@ -64,7 +64,7 @@ public class MFC extends JavaPlugin {
 
         getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
             public void run() {
-                executeCommand("\nbc &a&lKey-all Event&f will begin in &65 minutes\n");
+                executeCommand("bc &a&lKey-all Event&f will begin in &65 minutes");
                 getServer().getScheduler().runTaskLater(getInstance(), new Runnable() {
                     public void run() {
                         if (getServer().getOnlinePlayers().size() != 0) {
