@@ -41,7 +41,6 @@ public class MFC extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new MFCB(this));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Minefactions());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Ping());
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Vote());
 
         reloadConfig();
     }

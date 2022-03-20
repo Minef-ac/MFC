@@ -1,6 +1,7 @@
 package ac.minef.mfc.spigot;
 
 import ac.minef.mfc.spigot.commands.MFCCommand;
+import ac.minef.mfc.spigot.commands.VoteCommand;
 import ac.minef.mfc.spigot.listeners.*;
 import litebans.api.Database;
 import net.luckperms.api.LuckPerms;
@@ -32,7 +33,6 @@ import java.util.Objects;
 public class MFC extends JavaPlugin {
 
     private static MFC instance;
-    public boolean isEnabled = true;
     FileConfiguration config;
     LuckPerms api;
 
@@ -54,6 +54,7 @@ public class MFC extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
 
         getCommand("mfc").setExecutor(new MFCCommand());
+        getCommand("vote").setExecutor(new VoteCommand());
 
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {

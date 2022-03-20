@@ -5,6 +5,12 @@ depend:
   - LiteBans
   - Sparky
 commands:
+  vote:
+    aliases:
+      - votes
+      - voting
+      - votelink
+      - votelinks
   mfc:
     aliases:
       - core
