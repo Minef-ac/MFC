@@ -1,5 +1,6 @@
-package ac.minef.mfc.spigot;
+package ac.minef.mfc.spigot.utils;
 
+import ac.minef.mfc.spigot.MFC;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

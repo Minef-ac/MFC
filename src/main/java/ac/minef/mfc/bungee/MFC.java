@@ -1,10 +1,13 @@
 package ac.minef.mfc.bungee;
 
 import ac.minef.mfc.bungee.commands.*;
-import ac.minef.mfc.bungee.listeners.*;
+
 import com.google.common.io.ByteStreams;
+
 import litebans.api.Database;
+
 import net.luckperms.api.LuckPermsProvider;
+
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -13,21 +16,19 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
+
 import java.io.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MFC extends Plugin {
-    private static final String avatarURL = "https://crafatar.com/avatars/<uuid>?overlay&size=64";
 
     private static MFC instance;
-    public Map<String, Boolean> playerInfo = new HashMap<>();
     Configuration config;
+
     int bcMsg;
 
     public static MFC getInstance() {
@@ -37,11 +38,10 @@ public class MFC extends Plugin {
     public void onEnable() {
         instance = this;
 
-        // ProxyServer.getInstance().getPluginManager().registerListener(this, new TabComplete());
-
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new MFCB(this));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Minefactions());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Ping());
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Vote());
 
         reloadConfig();
     }

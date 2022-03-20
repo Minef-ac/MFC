@@ -1,6 +1,6 @@
 package ac.minef.mfc.spigot.listeners;
 
-import ac.minef.mfc.spigot.ItemUtils;
+import ac.minef.mfc.spigot.utils.ItemUtils;
 import ac.minef.mfc.spigot.MFC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

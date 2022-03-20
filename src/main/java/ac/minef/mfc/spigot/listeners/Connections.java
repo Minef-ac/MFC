@@ -20,18 +20,17 @@ public class Connections implements Listener {
         for (Player p: MFC.getInstance().getServer().getOnlinePlayers()) {
             MFC.getInstance().executeCommand("mfc sound " + p.getDisplayName() + " fireworks.twinkle_far");
         }
-        if (e.getPlayer().hasPermission("deluxetags.tag.Owner")) {
+        if (MFC.getInstance().getRank(e.getPlayer().getDisplayName()).equalsIgnoreCase("owner")) {
             MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " Owner");
         }
-        else if (e.getPlayer().hasPermission("deluxetags.tag.Administrator")) {
+        else if (MFC.getInstance().getRank(e.getPlayer().getDisplayName()).equalsIgnoreCase("administrator")) {
             MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " Administrator");
         }
-        else if (e.getPlayer().hasPermission("deluxetags.tag.Moderator")) {
+        else if (MFC.getInstance().getRank(e.getPlayer().getDisplayName()).equalsIgnoreCase("moderator")) {
             MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " Moderator");
         }
         if (!e.getPlayer().hasPlayedBefore()) {
-            if (e.getPlayer().hasPermission("deluxetags.tag.Premium"))
-            {
+            if (MFC.getInstance().getRank(e.getPlayer().getDisplayName()).equalsIgnoreCase("donor")) {
                 MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " Premium");
             } else {
                 MFC.getInstance().executeCommand("tags set " + e.getPlayer().getDisplayName() + " A");
