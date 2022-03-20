@@ -11,7 +11,7 @@ public class VoteCommand implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("vote")) {
             sender.sendMessage("\n" + "" + "\n" + "   §8§l┏§8━ §6§lVOTING LINKS\n" +
                     "  §r §8§l┃ " + "" + " §7§o Vote for the server and receive\n" +
-                    "  §r §8§l┃ " + "" + " §7§o rewards in return, such as keys § money!\n" +
+                    "  §r §8§l┃ " + "" + " §7§o rewards in return, such as keys money!\n" +
                     "  §r §8§l┃ " + "" + " \n" +
                     "  §r §8§l┃ " + "" + " §e§lVOTE§8-§f https://minef.ac/vote" + "\n" +
                     "  §r §8§l┃ " + "\n" +

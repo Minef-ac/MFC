@@ -3,12 +3,17 @@ package ac.minef.mfc.spigot;
 import ac.minef.mfc.spigot.commands.MFCCommand;
 import ac.minef.mfc.spigot.commands.VoteCommand;
 import ac.minef.mfc.spigot.listeners.*;
+
 import litebans.api.Database;
 import net.luckperms.api.LuckPerms;
+
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+
+import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -16,24 +21,25 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class MFC extends JavaPlugin {
 
     private static MFC instance;
     FileConfiguration config;
+
+    private static Economy econ = null;
     LuckPerms api;
 
     public static MFC getInstance() {
@@ -56,12 +62,39 @@ public class MFC extends JavaPlugin {
         getCommand("mfc").setExecutor(new MFCCommand());
         getCommand("vote").setExecutor(new VoteCommand());
 
+        if (!setupEconomy() ) {
+            getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
             api = provider.getProvider();
         }
 
         Reload();
+
+        getServer().getScheduler().runTaskTimer(this, new Runnable() {
+            public void run() {
+                for (Player p : getServer().getOnlinePlayers()) {
+                    if (getRank(p.getDisplayName()).equalsIgnoreCase("A")
+                    && getEconomy().getBalance(p) >= 50000) {
+                        p.performCommand("rankup");
+                        return;
+                    }
+                    if (getRank(p.getDisplayName()).equalsIgnoreCase("B")
+                            && getEconomy().getBalance(p) >= 100000) {
+                        p.performCommand("rankup");
+                        return;
+                    }
+                    if (getRank(p.getDisplayName()).equalsIgnoreCase("C")
+                            && getEconomy().getBalance(p) >= 200000) {
+                        p.performCommand("rankup");
+                    }
+                }
+            }
+        },20, 20);
 
         getServer().getScheduler().runTaskTimer(getInstance(), new Runnable() {
             public void run() {
@@ -103,6 +136,22 @@ public class MFC extends JavaPlugin {
             getLogger().severe("Config failed to save!");
             e.printStackTrace();
         }
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    public static Economy getEconomy() {
+        return econ;
     }
 
     public String getRank(String p) {
