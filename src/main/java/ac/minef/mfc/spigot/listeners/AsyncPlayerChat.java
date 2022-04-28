@@ -28,20 +28,7 @@ public class AsyncPlayerChat implements Listener {
             String m = e.getMessage().toLowerCase();
             if (!e.getPlayer().hasPermission("group.donor")) {
                 chatTimer.add(e.getPlayer());
-                if (m.equalsIgnoreCase("nig")
-                        || m.contains("nigg") || m.contains("nig ")
-                        || m.contains("n1g") || m.contains("n3gro")
-                        || m.contains("negro") || m.contains("kys")
-                        || m.contains("fck") || m.contains("retard")
-                        || m.contains("cunt") || m.contains("penis")
-                        || m.contains("peenis") || m.contains("pen15")
-                        || m.contains("fag") || m.contains("phag") || m.contains("gge")
-                        || m.contains("queer") || m.contains("blackie")
-                        || m.contains("blacky") || m.contains("marlowe")
-                        || m.contains("dick") || m.contains("cock")
-                        || m.contains("nigger") || m.contains("aggo")
-                        || m.contains("tits") || m.contains("puss")
-                        || m.contains("0ck") || m.contains("aqg")) {
+                if (MFC.getInstance().isProfanity(e.getPlayer(), m)) {
                     TextComponent msg = new TextComponent("\n        §8[§c!§8]§e "
                             + e.getPlayer().getName() + " §cfailed chat§7: §e" + e.getMessage() + "\n");
                     msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
@@ -50,7 +37,6 @@ public class AsyncPlayerChat implements Listener {
                             "/warn " + e.getPlayer().getName() + " Inappropriate Language -s"));
 
                     e.setCancelled(true);
-                    e.getPlayer().sendMessage(ChatColor.RED + "Inappropriate language detected.");
 
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         if (p.hasPermission("group.moderator"))

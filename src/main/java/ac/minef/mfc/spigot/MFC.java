@@ -32,7 +32,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.logging.Level;
 
 public class MFC extends JavaPlugin {
 
@@ -50,12 +49,11 @@ public class MFC extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        getServer().getPluginManager().registerEvents(new Armor(), this);
         getServer().getPluginManager().registerEvents(new AsyncPlayerChat(), this);
         getServer().getPluginManager().registerEvents(new Connections(), this);
         getServer().getPluginManager().registerEvents(new PlayerCommand(), this);
         getServer().getPluginManager().registerEvents(new SparkyPunish(), this);
-        getServer().getPluginManager().registerEvents(new Inventory(this), (Plugin) this);
+        getServer().getPluginManager().registerEvents(new Inventories(this), (Plugin) this);
         getServer().getPluginManager().registerEvents(new FoodLevelChange(this), this);
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
 
